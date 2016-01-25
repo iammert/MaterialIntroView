@@ -2,7 +2,6 @@ package co.mobiwise.materialintro;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -17,7 +16,6 @@ public class AnimationFactory {
             @Override
             public void onAnimationStart(Animator animation) {
                 onAnimationStartListener.onAnimationStart();
-                Log.v("TEST","HERE");
             }
 
             @Override

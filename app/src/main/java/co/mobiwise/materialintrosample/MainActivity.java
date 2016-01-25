@@ -5,11 +5,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import co.mobiwise.materialintro.MaterialIntroView;
+import co.mobiwise.materialintro.shape.Focus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,11 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        new MaterialIntroView.Builder(this)
-                .setDelayMillis(2000)
-                .enableAnimation(true)
-                .show();
 
+        Button button = (Button) findViewById(R.id.button);
+        TextView textView = (TextView) findViewById(R.id.text);
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT | ViewGroup.LayoutParams.MATCH_PARENT);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        new MaterialIntroView.Builder(this)
+                .setDelayMillis(2000)
+                .enableFadeAnimation(true)
+                .setTarget(textView)
+                .setFocusType(Focus.ALL)
+                .show();
+
+
     }
 
     @Override
