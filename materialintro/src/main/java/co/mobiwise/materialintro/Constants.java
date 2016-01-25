@@ -5,5 +5,9 @@ package co.mobiwise.materialintro;
  */
 public class Constants {
 
-    public static int DEFAULT_MASK_COLOR = 0x65000000;
+    public static int DEFAULT_MASK_COLOR = 0x95000000;
+
+    public static long DEFAULT_DELAY_MILLIS = 0;
+
+    public static long DEFAULT_FADE_DURATION = 500;
 }

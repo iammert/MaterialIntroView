@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -16,7 +17,15 @@ public class MaterialIntroView extends FrameLayout{
 
     private int maskColor;
 
+    private long delayMillis;
+
     private boolean isReady;
+
+    private boolean isAnimationEnabled;
+
+    private long fadeAnimationDuration;
+
+    private Handler handler;
 
     public MaterialIntroView(Context context) {
         super(context);
@@ -47,7 +56,15 @@ public class MaterialIntroView extends FrameLayout{
          * set default values
          */
         maskColor = Constants.DEFAULT_MASK_COLOR;
+        delayMillis = Constants.DEFAULT_DELAY_MILLIS;
+        fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
         isReady = false;
+        isAnimationEnabled = false;
+
+        /**
+         * initialize objects
+         */
+        handler = new Handler();
     }
 
     @Override
@@ -64,7 +81,15 @@ public class MaterialIntroView extends FrameLayout{
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
 
         setReady(true);
-        setVisibility(VISIBLE);
+
+        handler.postDelayed(() -> {
+            if(isAnimationEnabled)
+                AnimationFactory.animateFadeIn(this, fadeAnimationDuration, () -> setVisibility(VISIBLE));
+            else
+                setVisibility(VISIBLE);
+
+        },delayMillis);
+
     }
 
     /**
@@ -77,6 +102,14 @@ public class MaterialIntroView extends FrameLayout{
 
     private void setMaskColor(int maskColor){
         this.maskColor = maskColor;
+    }
+
+    private void setDelay(int delayMillis){
+        this.delayMillis = delayMillis;
+    }
+
+    private void enableAnimation(boolean isAnimationEnabled){
+        this.isAnimationEnabled = isAnimationEnabled;
     }
 
     private void setReady(boolean isReady){
@@ -103,9 +136,20 @@ public class MaterialIntroView extends FrameLayout{
         }
 
         public Builder setMaskColor(int maskColor){
-            materialIntroView.maskColor = maskColor;
+            materialIntroView.setMaskColor(maskColor);
             return this;
         }
+
+        public Builder setDelayMillis(int delayMillis){
+            materialIntroView.setDelay(delayMillis);
+            return this;
+        }
+
+        public Builder enableAnimation(boolean isAnimationEnabled){
+            materialIntroView.enableAnimation(isAnimationEnabled);
+            return this;
+        }
+
 
         public MaterialIntroView show(){
             materialIntroView.show(activity);

@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         new MaterialIntroView.Builder(this)
-                .setMaskColor(0x45123456)
+                .setDelayMillis(2000)
+                .enableAnimation(true)
                 .show();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
