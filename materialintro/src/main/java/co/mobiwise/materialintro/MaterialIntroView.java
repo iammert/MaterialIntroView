@@ -21,7 +21,7 @@ public class MaterialIntroView extends FrameLayout{
 
     private boolean isReady;
 
-    private boolean isAnimationEnabled;
+    private boolean isFadeAnimationEnabled;
 
     private long fadeAnimationDuration;
 
@@ -59,7 +59,7 @@ public class MaterialIntroView extends FrameLayout{
         delayMillis = Constants.DEFAULT_DELAY_MILLIS;
         fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
         isReady = false;
-        isAnimationEnabled = false;
+        isFadeAnimationEnabled = false;
 
         /**
          * initialize objects
@@ -83,7 +83,7 @@ public class MaterialIntroView extends FrameLayout{
         setReady(true);
 
         handler.postDelayed(() -> {
-            if(isAnimationEnabled)
+            if(isFadeAnimationEnabled)
                 AnimationFactory.animateFadeIn(this, fadeAnimationDuration, () -> setVisibility(VISIBLE));
             else
                 setVisibility(VISIBLE);
@@ -108,8 +108,8 @@ public class MaterialIntroView extends FrameLayout{
         this.delayMillis = delayMillis;
     }
 
-    private void enableAnimation(boolean isAnimationEnabled){
-        this.isAnimationEnabled = isAnimationEnabled;
+    private void enableFadeAnimation(boolean isFadeAnimationEnabled){
+        this.isFadeAnimationEnabled = isFadeAnimationEnabled;
     }
 
     private void setReady(boolean isReady){
@@ -145,8 +145,8 @@ public class MaterialIntroView extends FrameLayout{
             return this;
         }
 
-        public Builder enableAnimation(boolean isAnimationEnabled){
-            materialIntroView.enableAnimation(isAnimationEnabled);
+        public Builder enableFadeAnimation(boolean isFadeAnimationEnabled){
+            materialIntroView.enableFadeAnimation(isFadeAnimationEnabled);
             return this;
         }
 
