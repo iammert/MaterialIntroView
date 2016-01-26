@@ -35,4 +35,9 @@ public class ViewTarget implements Target{
         );
     }
 
+    @Override
+    public View getView() {
+        return view;
+    }
+
 }

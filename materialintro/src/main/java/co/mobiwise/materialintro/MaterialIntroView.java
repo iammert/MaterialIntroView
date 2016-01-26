@@ -11,13 +11,16 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.target.Target;
 import co.mobiwise.materialintro.target.ViewTarget;
 
@@ -26,35 +29,88 @@ import co.mobiwise.materialintro.target.ViewTarget;
  */
 public class MaterialIntroView extends FrameLayout{
 
+    /**
+     * Mask color
+     */
     private int maskColor;
 
+    /**
+     * MaterialIntroView will start
+     * showing after delayMillis seconds
+     * passed
+     */
     private long delayMillis;
 
+    /**
+     * We don't draw MaterialIntroView
+     * until isReady field set to true
+     */
     private boolean isReady;
 
+    /**
+     * Show/Dismiss MaterialIntroView
+     * with fade in/out animation if
+     * this is enabled.
+     */
     private boolean isFadeAnimationEnabled;
 
+    /**
+     * Animation duration
+     */
     private long fadeAnimationDuration;
 
+    /**
+     * circleShape focus on target
+     * and clear circle to focus
+     */
     private Circle circleShape;
 
+    /**
+     * Focus Type
+     */
     private Focus focusType;
 
+    /**
+     * FocusGravity type
+     */
+    private FocusGravity focusGravity;
+
+    /**
+     * Target View
+     */
     private Target targetView;
 
+    /**
+     * Eraser
+     */
     private Paint eraser;
 
+    /**
+     * Handler will be used to
+     * delay MaterialIntroView
+     */
     private Handler handler;
 
+    /**
+     * All views will be drawn to
+     * this bitmap and canvas then
+     * bitmap will be drawn to canvas
+     */
     private Bitmap bitmap;
-
     private Canvas canvas;
 
+    /**
+     * Circle padding
+     */
     private int padding;
 
+    /**
+     * Layout width/height
+     */
     private int width;
-
     private int height;
+
+    private boolean dismissOnTouch;
 
     public MaterialIntroView(Context context) {
         super(context);
@@ -88,8 +144,11 @@ public class MaterialIntroView extends FrameLayout{
         delayMillis = Constants.DEFAULT_DELAY_MILLIS;
         fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
         padding = Constants.DEFAULT_TARGET_PADDING;
+        focusType = Focus.ALL;
+        focusGravity = FocusGravity.CENTER;
         isReady = false;
         isFadeAnimationEnabled = false;
+        dismissOnTouch = false;
 
         /**
          * initialize objects
@@ -100,6 +159,7 @@ public class MaterialIntroView extends FrameLayout{
         eraser.setColor(0xFFFFFFFF);
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
+
     }
 
     @Override
@@ -132,6 +192,50 @@ public class MaterialIntroView extends FrameLayout{
         canvas.drawBitmap(bitmap, 0, 0, null);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float xT = event.getX();
+        float yT = event.getY();
+
+        int xV = circleShape.getPoint().x;
+        int yV = circleShape.getPoint().y;
+
+        int radius = circleShape.getRadius();
+
+        double dx = Math.pow(xT - xV, 2);
+        double dy = Math.pow(yT - yV, 2);
+
+        boolean isTouchOnFocus = (dx + dy) <= Math.pow(radius, 2);
+
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+
+                if(isTouchOnFocus){
+                    targetView.getView().setPressed(true);
+                    targetView.getView().invalidate();
+                }
+
+                return true;
+            case MotionEvent.ACTION_UP:
+
+                if(isTouchOnFocus || dismissOnTouch)
+                    dismiss();
+
+                if(isTouchOnFocus){
+                    targetView.getView().performClick();
+                    targetView.getView().setPressed(true);
+                    targetView.getView().invalidate();
+                    targetView.getView().setPressed(false);
+                    targetView.getView().invalidate();
+                }
+
+                return true;
+            default: break;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
     private void show(Activity activity){
 
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
@@ -146,6 +250,10 @@ public class MaterialIntroView extends FrameLayout{
 
         },delayMillis);
 
+    }
+
+    private void dismiss(){
+        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
     }
 
     /**
@@ -188,6 +296,14 @@ public class MaterialIntroView extends FrameLayout{
         this.padding = padding;
     }
 
+    private void setDismissOnTouch(boolean dismissOnTouch){
+        this.dismissOnTouch = dismissOnTouch;
+    }
+
+    private void setFocusGravity(FocusGravity focusGravity){
+        this.focusGravity = focusGravity;
+    }
+
     /**
      *
      *
@@ -228,6 +344,11 @@ public class MaterialIntroView extends FrameLayout{
             return this;
         }
 
+        public Builder setFocusGravity(FocusGravity focusGravity){
+            materialIntroView.setFocusGravity(focusGravity);
+            return this;
+        }
+
         public Builder setTarget(View view){
             materialIntroView.setTarget(new ViewTarget(view));
             return this;
@@ -238,8 +359,14 @@ public class MaterialIntroView extends FrameLayout{
             return this;
         }
 
+        public Builder dismissOnTouch(boolean dismissOnTouch){
+            materialIntroView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+
         public MaterialIntroView build(){
-            materialIntroView.setCircle(new Circle(materialIntroView.targetView, materialIntroView.focusType));
+            Circle circle = new Circle(materialIntroView.targetView, materialIntroView.focusType, materialIntroView.focusGravity);
+            materialIntroView.setCircle(circle);
             return materialIntroView;
         }
 

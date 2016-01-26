@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import co.mobiwise.materialintro.MaterialIntroView;
 import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
         new MaterialIntroView.Builder(this)
                 .setDelayMillis(2000)
                 .enableFadeAnimation(true)
-                .setTarget(textView)
-                .setFocusType(Focus.ALL)
+                .setTarget(button)
+                .setFocusType(Focus.MINIMUM)
+                .dismissOnTouch(false)
+                .setFocusGravity(FocusGravity.LEFT)
                 .show();
-
-
     }
 
     @Override

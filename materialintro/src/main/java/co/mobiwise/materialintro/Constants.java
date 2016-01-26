@@ -11,5 +11,5 @@ public class Constants {
 
     public static long DEFAULT_FADE_DURATION = 500;
 
-    public static int DEFAULT_TARGET_PADDING = 15;
+    public static int DEFAULT_TARGET_PADDING = 10;
 }

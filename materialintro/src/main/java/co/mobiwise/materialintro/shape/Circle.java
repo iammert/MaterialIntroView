@@ -3,6 +3,7 @@ package co.mobiwise.materialintro.shape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 
 import co.mobiwise.materialintro.target.Target;
 
@@ -13,23 +14,46 @@ public class Circle {
 
     private Target target;
 
-    private Focus focus = Focus.MINIMUM;
+    private Focus focus;
+
+    private FocusGravity focusGravity;
 
     private int radius;
+
+    private Point circlePoint;
 
     public Circle(Target target) {
         this(target, Focus.MINIMUM);
     }
 
     public Circle(Target target,Focus focus) {
-        this.focus = focus;
+        this(target, focus, FocusGravity.CENTER);
+    }
+
+    public Circle(Target target, Focus focus, FocusGravity focusGravity) {
         this.target = target;
+        this.focus = focus;
+        this.focusGravity = focusGravity;
+        circlePoint = target.getPoint();
     }
 
     public void draw(Canvas canvas, Paint eraser, int padding){
         calculateRadius(padding);
-        Point point = target.getPoint();
-        canvas.drawCircle(point.x, point.y, radius, eraser);
+        circlePoint = getFocusPoint();
+        canvas.drawCircle(circlePoint.x, circlePoint.y, radius, eraser);
+    }
+
+    private Point getFocusPoint(){
+        if(focusGravity == FocusGravity.LEFT){
+            int xLeft = target.getRect().left + (target.getPoint().x - target.getRect().left) / 2;
+            return new Point(xLeft, target.getPoint().y);
+        }
+        else if(focusGravity == FocusGravity.RIGHT){
+            int xRight = target.getPoint().x + (target.getRect().right - target.getPoint().x) / 2;
+            return new Point(xRight, target.getPoint().y);
+        }
+        else
+            return target.getPoint();
     }
 
     private void calculateRadius(int padding){
@@ -47,6 +71,14 @@ public class Circle {
 
         radius = side + padding;
 
+    }
+
+    public int getRadius(){
+        return radius;
+    }
+
+    public Point getPoint(){
+        return circlePoint;
     }
 
 }
