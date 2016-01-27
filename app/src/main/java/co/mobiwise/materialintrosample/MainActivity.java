@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 new MaterialIntroView.Builder(MainActivity.this)
                         .setDelayMillis(2000)
                         .enableFadeAnimation(true)
-                        .setTarget(recyclerView.getChildAt(0))
+                        .setTarget(recyclerView.getChildAt(2))
                         .setFocusType(Focus.MINIMUM)
-                        .setTargetPadding(30)
+                        .setTargetPadding(70)
                         .dismissOnTouch(false)
                         .setFocusGravity(FocusGravity.LEFT)
                         .show();
             }
-        }, 1000);
+        }, 100);
 
 
     }

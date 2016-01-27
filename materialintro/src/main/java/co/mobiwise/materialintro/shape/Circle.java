@@ -4,7 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
+import co.mobiwise.materialintro.Constants;
 import co.mobiwise.materialintro.target.Target;
 
 /**
@@ -22,19 +24,23 @@ public class Circle {
 
     private Point circlePoint;
 
+    private int padding;
+
     public Circle(Target target) {
         this(target, Focus.MINIMUM);
     }
 
     public Circle(Target target,Focus focus) {
-        this(target, focus, FocusGravity.CENTER);
+        this(target, focus, FocusGravity.CENTER, Constants.DEFAULT_TARGET_PADDING);
     }
 
-    public Circle(Target target, Focus focus, FocusGravity focusGravity) {
+    public Circle(Target target, Focus focus, FocusGravity focusGravity, int padding) {
         this.target = target;
         this.focus = focus;
         this.focusGravity = focusGravity;
-        circlePoint = target.getPoint();
+        this.padding = padding;
+        circlePoint = getFocusPoint();
+        calculateRadius(padding);
     }
 
     public void draw(Canvas canvas, Paint eraser, int padding){
@@ -56,6 +62,11 @@ public class Circle {
             return target.getPoint();
     }
 
+    public void reCalculateAll(){
+        calculateRadius(padding);
+        circlePoint = getFocusPoint();
+    }
+
     private void calculateRadius(int padding){
         int side;
 
@@ -70,7 +81,6 @@ public class Circle {
         }
 
         radius = side + padding;
-
     }
 
     public int getRadius(){

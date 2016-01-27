@@ -11,12 +11,15 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
@@ -110,7 +113,19 @@ public class MaterialIntroView extends FrameLayout{
     private int width;
     private int height;
 
+    /**
+     * Dismiss on touch any position
+     */
     private boolean dismissOnTouch;
+
+    /**
+     * Info dialog view
+     */
+    private View infoView;
+
+    private TextView textViewInfo;
+
+    private boolean isLayoutCompleted;
 
     public MaterialIntroView(Context context) {
         super(context);
@@ -149,6 +164,7 @@ public class MaterialIntroView extends FrameLayout{
         isReady = false;
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
+        isLayoutCompleted = false;
 
         /**
          * initialize objects
@@ -160,6 +176,24 @@ public class MaterialIntroView extends FrameLayout{
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
+        View layoutInfo =  LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, this, true);
+        infoView = layoutInfo.findViewById(R.id.info_layout);
+        textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
+
+        getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            circleShape.reCalculateAll();
+            if(circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted)
+                setInfoLayout(height, circleShape);
+        });
+
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        width = getMeasuredWidth();
+        height = getMeasuredHeight();
     }
 
     @Override
@@ -167,9 +201,6 @@ public class MaterialIntroView extends FrameLayout{
         super.onDraw(canvas);
 
         if(!isReady) return;
-
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
 
         if(bitmap == null || canvas == null){
             if(bitmap != null) bitmap.recycle();
@@ -256,6 +287,25 @@ public class MaterialIntroView extends FrameLayout{
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
     }
 
+    private void setInfoLayout(int viewPositionY, Circle circle){
+
+        isLayoutCompleted = true;
+
+        FrameLayout.LayoutParams params = (LayoutParams) infoView.getLayoutParams();
+
+        if(circle.getPoint().y < viewPositionY / 2){
+            params.gravity = Gravity.TOP;
+            params.topMargin = circle.getPoint().y + circle.getRadius();
+        }
+        else{
+            params.gravity = Gravity.BOTTOM;
+            params.bottomMargin = height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius();
+        }
+
+        infoView.setLayoutParams(params);
+        infoView.setVisibility(VISIBLE);
+
+    }
     /**
      *
      *
@@ -365,7 +415,11 @@ public class MaterialIntroView extends FrameLayout{
         }
 
         public MaterialIntroView build(){
-            Circle circle = new Circle(materialIntroView.targetView, materialIntroView.focusType, materialIntroView.focusGravity);
+            Circle circle = new Circle(
+                    materialIntroView.targetView,
+                    materialIntroView.focusType,
+                    materialIntroView.focusGravity,
+                    materialIntroView.padding);
             materialIntroView.setCircle(circle);
             return materialIntroView;
         }

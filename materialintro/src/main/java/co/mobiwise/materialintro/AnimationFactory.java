@@ -23,7 +23,8 @@ public class AnimationFactory {
         objectAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                onAnimationStartListener.onAnimationStart();
+                if(onAnimationStartListener != null)
+                    onAnimationStartListener.onAnimationStart();
             }
 
             @Override
@@ -63,7 +64,8 @@ public class AnimationFactory {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                onAnimationEndListener.onAnimationEnd();
+                if(onAnimationEndListener != null)
+                    onAnimationEndListener.onAnimationEnd();
             }
 
             @Override
