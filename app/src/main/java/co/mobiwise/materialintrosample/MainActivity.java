@@ -54,15 +54,23 @@ public class MainActivity extends AppCompatActivity {
         initializeViewsAdapter();
         loadData();
 
-        new MaterialIntroView.Builder(MainActivity.this)
-                .setDelayMillis(2000)
-                .enableFadeAnimation(true)
-                .setTarget(floatingActionButton)
-                .setFocusType(Focus.MINIMUM)
-                .setTargetPadding(70)
-                .dismissOnTouch(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new MaterialIntroView.Builder(MainActivity.this)
+                        .setDelayMillis(2000)
+                        .enableFadeAnimation(true)
+                        .setTarget(recyclerView.getChildAt(0))
+                        .setFocusType(Focus.NORMAL)
+                        .setInfoText("Hey! Welcome to our app. Why don't you click here and let me guide you a minute. You can not skip this.")
+                        .setInfoTextSize(16)
+                        .dismissOnTouch(false)
+                        .setFocusGravity(FocusGravity.LEFT)
+                        .show();
+
+            }
+        },100);
+
 
 
     }

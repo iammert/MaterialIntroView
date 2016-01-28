@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -389,6 +390,14 @@ public class MaterialIntroView extends FrameLayout{
         textViewInfo.setTextColor(this.colorTextViewInfo);
     }
 
+    private void setTextViewInfo(String textViewInfo){
+        this.textViewInfo.setText(textViewInfo);
+    }
+
+    private void setTextViewInfoSize(int textViewInfoSize){
+        this.textViewInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, textViewInfoSize);
+    }
+
     /**
      *
      *
@@ -446,6 +455,16 @@ public class MaterialIntroView extends FrameLayout{
 
         public Builder setTextColor(int textColor){
             materialIntroView.setColorTextViewInfo(textColor);
+            return this;
+        }
+
+        public Builder setInfoText(String infoText){
+            materialIntroView.setTextViewInfo(infoText);
+            return this;
+        }
+
+        public Builder setInfoTextSize(int textSize){
+            materialIntroView.setTextViewInfoSize(textSize);
             return this;
         }
 
