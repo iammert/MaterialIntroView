@@ -1,5 +1,6 @@
 package co.mobiwise.materialintrosample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -53,21 +54,15 @@ public class MainActivity extends AppCompatActivity {
         initializeViewsAdapter();
         loadData();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                new MaterialIntroView.Builder(MainActivity.this)
-                        .setDelayMillis(2000)
-                        .enableFadeAnimation(true)
-                        .setTarget(recyclerView.getChildAt(2))
-                        .setFocusType(Focus.MINIMUM)
-                        .setTargetPadding(70)
-                        .dismissOnTouch(false)
-                        .setFocusGravity(FocusGravity.LEFT)
-                        .show();
-            }
-        }, 100);
+        new MaterialIntroView.Builder(MainActivity.this)
+                .setDelayMillis(2000)
+                .enableFadeAnimation(true)
+                .setTarget(floatingActionButton)
+                .setFocusType(Focus.MINIMUM)
+                .setTargetPadding(70)
+                .dismissOnTouch(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .show();
 
 
     }
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initializes views and adapter
      */
-    private void initializeViewsAdapter(){
+    private void initializeViewsAdapter() {
 
         setSupportActionBar(toolbar);
         collapsingToolbarLayout.setTitle("My RadioList");
@@ -89,18 +84,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.fab)
-    public void onClick(){
-        Log.v("TEST","Clicked");
+    public void onClick() {
+        Log.v("TEST", "Clicked");
     }
 
     /**
      * load mock data to adapter
      */
-    private void loadData(){
+    private void loadData() {
         Radio radio = new Radio("Joy Radio FM", R.drawable.temp, "102.5");
         List<Radio> radioList = new ArrayList<>();
 
-        for (int i = 0 ; i < 20 ; i++)
+        for (int i = 0; i < 20; i++)
             radioList.add(radio);
 
         adapter.setRadioList(radioList);

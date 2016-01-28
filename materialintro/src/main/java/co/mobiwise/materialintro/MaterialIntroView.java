@@ -125,6 +125,12 @@ public class MaterialIntroView extends FrameLayout{
 
     private TextView textViewInfo;
 
+    private int colorTextViewInfo;
+
+    /**
+     * When layout completed, we set this true
+     * Otherwise onGlobalLayoutListener stuck on loop.
+     */
     private boolean isLayoutCompleted;
 
     public MaterialIntroView(Context context) {
@@ -159,6 +165,7 @@ public class MaterialIntroView extends FrameLayout{
         delayMillis = Constants.DEFAULT_DELAY_MILLIS;
         fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
         padding = Constants.DEFAULT_TARGET_PADDING;
+        colorTextViewInfo = Constants.DEFAULT_COLOR_TEXTVIEW_INFO;
         focusType = Focus.ALL;
         focusGravity = FocusGravity.CENTER;
         isReady = false;
@@ -179,6 +186,7 @@ public class MaterialIntroView extends FrameLayout{
         View layoutInfo =  LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, this, true);
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
+        textViewInfo.setTextColor(colorTextViewInfo);
 
         getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             circleShape.reCalculateAll();
@@ -223,6 +231,12 @@ public class MaterialIntroView extends FrameLayout{
         canvas.drawBitmap(bitmap, 0, 0, null);
     }
 
+    /**
+     * Perform click operation when user
+     * touches on target circle.
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float xT = event.getX();
@@ -267,6 +281,11 @@ public class MaterialIntroView extends FrameLayout{
         return super.onTouchEvent(event);
     }
 
+    /**
+     * Shows material view with fade in
+     * animation
+     * @param activity
+     */
     private void show(Activity activity){
 
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
@@ -283,10 +302,21 @@ public class MaterialIntroView extends FrameLayout{
 
     }
 
+    /**
+     * Dismiss Material Intro View
+     */
     private void dismiss(){
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
     }
 
+    /**
+     * locate info card view above/below the
+     * circle. If circle's Y coordiante is bigger than
+     * Y coordinate of root view, then locate cardview
+     * above the circle. Otherwise locate below.
+     * @param viewPositionY
+     * @param circle
+     */
     private void setInfoLayout(int viewPositionY, Circle circle){
 
         isLayoutCompleted = true;
@@ -354,6 +384,11 @@ public class MaterialIntroView extends FrameLayout{
         this.focusGravity = focusGravity;
     }
 
+    private void setColorTextViewInfo(int colorTextViewInfo){
+        this.colorTextViewInfo = colorTextViewInfo;
+        textViewInfo.setTextColor(this.colorTextViewInfo);
+    }
+
     /**
      *
      *
@@ -406,6 +441,11 @@ public class MaterialIntroView extends FrameLayout{
 
         public Builder setTargetPadding(int padding){
             materialIntroView.setPadding(padding);
+            return this;
+        }
+
+        public Builder setTextColor(int textColor){
+            materialIntroView.setColorTextViewInfo(textColor);
             return this;
         }
 
