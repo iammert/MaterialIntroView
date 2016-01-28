@@ -18,9 +18,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.mobiwise.materialintro.view.MaterialIntroView;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         .enableFadeAnimation(true)
                         .setTarget(recyclerView.getChildAt(0))
                         .setFocusType(Focus.MINIMUM)
-                        .disableInfoDialog()
+                        .enableInfoDialog(false)
                         .setInfoText("Hey! Welcome to our app. Why don't you click here and let me guide you a minute. You can not skip this.")
                         .setInfoTextSize(16)
                         .dismissOnTouch(false)
@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         .show();
 
             }
-        },100);
-
+        }, 100);
 
 
     }

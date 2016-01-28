@@ -11,9 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,7 +34,7 @@ import co.mobiwise.materialintro.target.ViewTarget;
 /**
  * Created by mertsimsek on 22/01/16.
  */
-public class MaterialIntroView extends RelativeLayout{
+public class MaterialIntroView extends RelativeLayout {
 
     /**
      * Mask color
@@ -178,7 +176,7 @@ public class MaterialIntroView extends RelativeLayout{
         init(context);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         setWillNotDraw(false);
         setVisibility(INVISIBLE);
 
@@ -208,21 +206,21 @@ public class MaterialIntroView extends RelativeLayout{
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        View layoutInfo =  LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
+        View layoutInfo = LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
 
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
 
         dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
-        dotView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+        dotView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 circleShape.reCalculateAll();
-                if(circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted){
-                    if(isInfoEnabled)
+                if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
+                    if (isInfoEnabled)
                         handler.post(() -> setInfoLayout(height, circleShape));
                     handler.post(() -> setDotViewLayout());
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -245,10 +243,10 @@ public class MaterialIntroView extends RelativeLayout{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(!isReady) return;
+        if (!isReady) return;
 
-        if(bitmap == null || canvas == null){
-            if(bitmap != null) bitmap.recycle();
+        if (bitmap == null || canvas == null) {
+            if (bitmap != null) bitmap.recycle();
 
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             this.canvas = new Canvas(bitmap);
@@ -271,6 +269,7 @@ public class MaterialIntroView extends RelativeLayout{
     /**
      * Perform click operation when user
      * touches on target circle.
+     *
      * @param event
      * @return
      */
@@ -289,10 +288,10 @@ public class MaterialIntroView extends RelativeLayout{
 
         boolean isTouchOnFocus = (dx + dy) <= Math.pow(radius, 2);
 
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                if(isTouchOnFocus){
+                if (isTouchOnFocus) {
                     targetView.getView().setPressed(true);
                     targetView.getView().invalidate();
                 }
@@ -300,10 +299,10 @@ public class MaterialIntroView extends RelativeLayout{
                 return true;
             case MotionEvent.ACTION_UP:
 
-                if(isTouchOnFocus || dismissOnTouch)
+                if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
 
-                if(isTouchOnFocus){
+                if (isTouchOnFocus) {
                     targetView.getView().performClick();
                     targetView.getView().setPressed(true);
                     targetView.getView().invalidate();
@@ -312,7 +311,8 @@ public class MaterialIntroView extends RelativeLayout{
                 }
 
                 return true;
-            default: break;
+            default:
+                break;
         }
 
         return super.onTouchEvent(event);
@@ -321,28 +321,29 @@ public class MaterialIntroView extends RelativeLayout{
     /**
      * Shows material view with fade in
      * animation
+     *
      * @param activity
      */
-    private void show(Activity activity){
+    private void show(Activity activity) {
 
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
 
         setReady(true);
 
         handler.postDelayed(() -> {
-            if(isFadeAnimationEnabled)
+            if (isFadeAnimationEnabled)
                 AnimationFactory.animateFadeIn(this, fadeAnimationDuration, () -> setVisibility(VISIBLE));
             else
                 setVisibility(VISIBLE);
 
-        },delayMillis);
+        }, delayMillis);
 
     }
 
     /**
      * Dismiss Material Intro View
      */
-    private void dismiss(){
+    private void dismiss() {
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
     }
 
@@ -351,27 +352,27 @@ public class MaterialIntroView extends RelativeLayout{
      * circle. If circle's Y coordiante is bigger than
      * Y coordinate of root view, then locate cardview
      * above the circle. Otherwise locate below.
+     *
      * @param viewPositionY
      * @param circle
      */
-    private void setInfoLayout(int viewPositionY, Circle circle){
+    private void setInfoLayout(int viewPositionY, Circle circle) {
 
         isLayoutCompleted = true;
 
-        if(infoView.getParent() != null)
-            ((ViewGroup)infoView.getParent()).removeView(infoView);
+        if (infoView.getParent() != null)
+            ((ViewGroup) infoView.getParent()).removeView(infoView);
 
         RelativeLayout.LayoutParams infoDialogParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.FILL_PARENT);
 
-        if(circle.getPoint().y < viewPositionY / 2){
+        if (circle.getPoint().y < viewPositionY / 2) {
             ((RelativeLayout) infoView).setGravity(Gravity.TOP);
-            infoDialogParams.setMargins(0,circle.getPoint().y + circle.getRadius(),0,0);
-        }
-        else{
+            infoDialogParams.setMargins(0, circle.getPoint().y + circle.getRadius(), 0, 0);
+        } else {
             ((RelativeLayout) infoView).setGravity(Gravity.BOTTOM);
-            infoDialogParams.setMargins(0,0,0,height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius());
+            infoDialogParams.setMargins(0, 0, 0, height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius());
         }
 
         infoView.setLayoutParams(infoDialogParams);
@@ -383,10 +384,10 @@ public class MaterialIntroView extends RelativeLayout{
 
     }
 
-    private void setDotViewLayout(){
+    private void setDotViewLayout() {
 
-        if(dotView.getParent() != null)
-            ((ViewGroup)dotView.getParent()).removeView(dotView);
+        if (dotView.getParent() != null)
+            ((ViewGroup) dotView.getParent()).removeView(dotView);
 
         RelativeLayout.LayoutParams dotViewLayoutParams = (LayoutParams) generateDefaultLayoutParams();
         dotViewLayoutParams.setMargins(
@@ -399,81 +400,74 @@ public class MaterialIntroView extends RelativeLayout{
         addView(dotView);
 
         dotView.setVisibility(VISIBLE);
+        AnimationFactory.performAnimation(dotView);
     }
 
     /**
-     *
-     *
      * SETTERS
-     *
-     *
      */
 
-    private void setMaskColor(int maskColor){
+    private void setMaskColor(int maskColor) {
         this.maskColor = maskColor;
     }
 
-    private void setDelay(int delayMillis){
+    private void setDelay(int delayMillis) {
         this.delayMillis = delayMillis;
     }
 
-    private void enableFadeAnimation(boolean isFadeAnimationEnabled){
+    private void enableFadeAnimation(boolean isFadeAnimationEnabled) {
         this.isFadeAnimationEnabled = isFadeAnimationEnabled;
     }
 
-    private void setReady(boolean isReady){
+    private void setReady(boolean isReady) {
         this.isReady = isReady;
     }
 
-    private void setTarget(Target target){
+    private void setTarget(Target target) {
         targetView = target;
     }
 
-    private void setFocusType(Focus focusType){
+    private void setFocusType(Focus focusType) {
         this.focusType = focusType;
     }
 
-    private void setCircle(Circle circleShape){
+    private void setCircle(Circle circleShape) {
         this.circleShape = circleShape;
     }
 
-    private void setPadding(int padding){
+    private void setPadding(int padding) {
         this.padding = padding;
     }
 
-    private void setDismissOnTouch(boolean dismissOnTouch){
+    private void setDismissOnTouch(boolean dismissOnTouch) {
         this.dismissOnTouch = dismissOnTouch;
     }
 
-    private void setFocusGravity(FocusGravity focusGravity){
+    private void setFocusGravity(FocusGravity focusGravity) {
         this.focusGravity = focusGravity;
     }
 
-    private void setColorTextViewInfo(int colorTextViewInfo){
+    private void setColorTextViewInfo(int colorTextViewInfo) {
         this.colorTextViewInfo = colorTextViewInfo;
         textViewInfo.setTextColor(this.colorTextViewInfo);
     }
 
-    private void setTextViewInfo(String textViewInfo){
+    private void setTextViewInfo(String textViewInfo) {
         this.textViewInfo.setText(textViewInfo);
     }
 
-    private void setTextViewInfoSize(int textViewInfoSize){
+    private void setTextViewInfoSize(int textViewInfoSize) {
         this.textViewInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, textViewInfoSize);
     }
 
-    private void disableInfoDialog(){
-        isInfoEnabled = false;
+    private void enableInfoDialog(boolean isInfoEnabled) {
+        this.isInfoEnabled = isInfoEnabled;
     }
 
     /**
-     *
-     *
      * Builder Class
-     *
-     *
      */
-    public static class Builder{
+    public static class Builder {
 
         private MaterialIntroView materialIntroView;
 
@@ -486,67 +480,67 @@ public class MaterialIntroView extends RelativeLayout{
             materialIntroView = new MaterialIntroView(activity);
         }
 
-        public Builder setMaskColor(int maskColor){
+        public Builder setMaskColor(int maskColor) {
             materialIntroView.setMaskColor(maskColor);
             return this;
         }
 
-        public Builder setDelayMillis(int delayMillis){
+        public Builder setDelayMillis(int delayMillis) {
             materialIntroView.setDelay(delayMillis);
             return this;
         }
 
-        public Builder enableFadeAnimation(boolean isFadeAnimationEnabled){
+        public Builder enableFadeAnimation(boolean isFadeAnimationEnabled) {
             materialIntroView.enableFadeAnimation(isFadeAnimationEnabled);
             return this;
         }
 
-        public Builder setFocusType(Focus focusType){
+        public Builder setFocusType(Focus focusType) {
             materialIntroView.setFocusType(focusType);
             return this;
         }
 
-        public Builder setFocusGravity(FocusGravity focusGravity){
+        public Builder setFocusGravity(FocusGravity focusGravity) {
             materialIntroView.setFocusGravity(focusGravity);
             return this;
         }
 
-        public Builder setTarget(View view){
+        public Builder setTarget(View view) {
             materialIntroView.setTarget(new ViewTarget(view));
             return this;
         }
 
-        public Builder setTargetPadding(int padding){
+        public Builder setTargetPadding(int padding) {
             materialIntroView.setPadding(padding);
             return this;
         }
 
-        public Builder setTextColor(int textColor){
+        public Builder setTextColor(int textColor) {
             materialIntroView.setColorTextViewInfo(textColor);
             return this;
         }
 
-        public Builder setInfoText(String infoText){
+        public Builder setInfoText(String infoText) {
             materialIntroView.setTextViewInfo(infoText);
             return this;
         }
 
-        public Builder setInfoTextSize(int textSize){
+        public Builder setInfoTextSize(int textSize) {
             materialIntroView.setTextViewInfoSize(textSize);
             return this;
         }
 
-        public Builder dismissOnTouch(boolean dismissOnTouch){
+        public Builder dismissOnTouch(boolean dismissOnTouch) {
             materialIntroView.setDismissOnTouch(dismissOnTouch);
             return this;
         }
 
-        public Builder disableInfoDialog(){
-            materialIntroView.disableInfoDialog();
+        public Builder enableInfoDialog(boolean isDialogEnabled) {
+            materialIntroView.enableInfoDialog(isDialogEnabled);
             return this;
         }
 
-        public MaterialIntroView build(){
+        public MaterialIntroView build() {
             Circle circle = new Circle(
                     materialIntroView.targetView,
                     materialIntroView.focusType,
@@ -556,7 +550,7 @@ public class MaterialIntroView extends RelativeLayout{
             return materialIntroView;
         }
 
-        public MaterialIntroView show(){
+        public MaterialIntroView show() {
             build().show(activity);
             return materialIntroView;
         }
