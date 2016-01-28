@@ -1,4 +1,4 @@
-package co.mobiwise.materialintro;
+package co.mobiwise.materialintro.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,9 +20,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.mobiwise.materialintro.AnimationFactory;
+import co.mobiwise.materialintro.Constants;
+import co.mobiwise.materialintro.R;
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
@@ -31,7 +36,7 @@ import co.mobiwise.materialintro.target.ViewTarget;
 /**
  * Created by mertsimsek on 22/01/16.
  */
-public class MaterialIntroView extends FrameLayout{
+public class MaterialIntroView extends RelativeLayout{
 
     /**
      * Mask color
@@ -124,9 +129,27 @@ public class MaterialIntroView extends FrameLayout{
      */
     private View infoView;
 
+    /**
+     * Info Dialog Text
+     */
     private TextView textViewInfo;
 
+    /**
+     * Info dialog text color
+     */
     private int colorTextViewInfo;
+
+    /**
+     * Info dialog will be shown
+     * If this value true
+     */
+    private boolean isInfoEnabled;
+
+    /**
+     * Dot view will appear center of
+     * cleared target area
+     */
+    private View dotView;
 
     /**
      * When layout completed, we set this true
@@ -173,6 +196,7 @@ public class MaterialIntroView extends FrameLayout{
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
         isLayoutCompleted = false;
+        isInfoEnabled = true;
 
         /**
          * initialize objects
@@ -184,16 +208,28 @@ public class MaterialIntroView extends FrameLayout{
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        View layoutInfo =  LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, this, true);
+        View layoutInfo =  LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
+
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
 
-        getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            circleShape.reCalculateAll();
-            if(circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted)
-                setInfoLayout(height, circleShape);
+        dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
+        dotView.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                circleShape.reCalculateAll();
+                if(circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted){
+                    if(isInfoEnabled)
+                        handler.post(() -> setInfoLayout(height, circleShape));
+                    handler.post(() -> setDotViewLayout());
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
         });
+
 
     }
 
@@ -322,21 +358,49 @@ public class MaterialIntroView extends FrameLayout{
 
         isLayoutCompleted = true;
 
-        FrameLayout.LayoutParams params = (LayoutParams) infoView.getLayoutParams();
+        if(infoView.getParent() != null)
+            ((ViewGroup)infoView.getParent()).removeView(infoView);
+
+        RelativeLayout.LayoutParams infoDialogParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT);
 
         if(circle.getPoint().y < viewPositionY / 2){
-            params.gravity = Gravity.TOP;
-            params.topMargin = circle.getPoint().y + circle.getRadius();
+            ((RelativeLayout) infoView).setGravity(Gravity.TOP);
+            infoDialogParams.setMargins(0,circle.getPoint().y + circle.getRadius(),0,0);
         }
         else{
-            params.gravity = Gravity.BOTTOM;
-            params.bottomMargin = height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius();
+            ((RelativeLayout) infoView).setGravity(Gravity.BOTTOM);
+            infoDialogParams.setMargins(0,0,0,height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius());
         }
 
-        infoView.setLayoutParams(params);
+        infoView.setLayoutParams(infoDialogParams);
+        infoView.postInvalidate();
+
+        addView(infoView);
+
         infoView.setVisibility(VISIBLE);
 
     }
+
+    private void setDotViewLayout(){
+
+        if(dotView.getParent() != null)
+            ((ViewGroup)dotView.getParent()).removeView(dotView);
+
+        RelativeLayout.LayoutParams dotViewLayoutParams = (LayoutParams) generateDefaultLayoutParams();
+        dotViewLayoutParams.setMargins(
+                circleShape.getPoint().x - (dotView.getMeasuredWidth() / 2),
+                circleShape.getPoint().y - (dotView.getMeasuredHeight() / 2),
+                0,
+                0);
+        dotView.setLayoutParams(dotViewLayoutParams);
+        dotView.postInvalidate();
+        addView(dotView);
+
+        dotView.setVisibility(VISIBLE);
+    }
+
     /**
      *
      *
@@ -396,6 +460,10 @@ public class MaterialIntroView extends FrameLayout{
 
     private void setTextViewInfoSize(int textViewInfoSize){
         this.textViewInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, textViewInfoSize);
+    }
+
+    private void disableInfoDialog(){
+        isInfoEnabled = false;
     }
 
     /**
@@ -470,6 +538,11 @@ public class MaterialIntroView extends FrameLayout{
 
         public Builder dismissOnTouch(boolean dismissOnTouch){
             materialIntroView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+
+        public Builder disableInfoDialog(){
+            materialIntroView.disableInfoDialog();
             return this;
         }
 

@@ -1,22 +1,16 @@
 package co.mobiwise.materialintrosample;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import co.mobiwise.materialintro.MaterialIntroView;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 
@@ -56,16 +50,18 @@ public class MainActivity extends AppCompatActivity {
 
         new Handler().postDelayed(new Runnable() {
             @Override
+
             public void run() {
                 new MaterialIntroView.Builder(MainActivity.this)
-                        .setDelayMillis(2000)
+                        .setDelayMillis(400)
                         .enableFadeAnimation(true)
                         .setTarget(recyclerView.getChildAt(0))
-                        .setFocusType(Focus.NORMAL)
+                        .setFocusType(Focus.MINIMUM)
+                        .disableInfoDialog()
                         .setInfoText("Hey! Welcome to our app. Why don't you click here and let me guide you a minute. You can not skip this.")
                         .setInfoTextSize(16)
                         .dismissOnTouch(false)
-                        .setFocusGravity(FocusGravity.LEFT)
+                        .setFocusGravity(FocusGravity.CENTER)
                         .show();
 
             }
