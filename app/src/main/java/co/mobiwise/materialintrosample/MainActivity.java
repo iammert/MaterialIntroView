@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                         .enableDotAnimation(true)
                         .setInfoText("Hey! Welcome to our app. Why don't you click here and let me guide you a minute. You can not skip this.")
                         .show();
-
             }
         }, 100);
 

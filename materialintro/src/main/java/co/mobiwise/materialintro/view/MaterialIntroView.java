@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.mobiwise.materialintro.animation.AnimationFactory;
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.utils.Constants;
 import co.mobiwise.materialintro.R;
@@ -176,6 +177,11 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean isLayoutCompleted;
 
+    /**
+     * Notify user when MaterialIntroView is dismissed
+     */
+    private MaterialIntroListener materialIntroListener;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -246,13 +252,12 @@ public class MaterialIntroView extends RelativeLayout {
                 if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
                         handler.post(() -> setInfoLayout(height, circleShape));
-                    if(isDotViewEnabled)
+                    if (isDotViewEnabled)
                         handler.post(() -> setDotViewLayout());
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
         });
-
 
     }
 
@@ -327,14 +332,6 @@ public class MaterialIntroView extends RelativeLayout {
                 if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
 
-                if (isTouchOnFocus) {
-                    targetView.getView().performClick();
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                    targetView.getView().setPressed(false);
-                    targetView.getView().invalidate();
-                }
-
                 return true;
             default:
                 break;
@@ -351,7 +348,7 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private void show(Activity activity) {
 
-        if(preferencesManager.isDisplayed(materialIntroViewId))
+        if (preferencesManager.isDisplayed(materialIntroViewId))
             return;
 
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
@@ -373,7 +370,13 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private void dismiss() {
         preferencesManager.setDisplayed(materialIntroViewId);
-        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
+        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> {
+            setVisibility(INVISIBLE);
+
+            if (materialIntroListener != null)
+                materialIntroListener.onUserClicked(materialIntroViewId);
+
+        });
     }
 
     /**
@@ -495,12 +498,16 @@ public class MaterialIntroView extends RelativeLayout {
         this.isInfoEnabled = isInfoEnabled;
     }
 
-    private void enableDotView(boolean isDotViewEnabled){
+    private void enableDotView(boolean isDotViewEnabled) {
         this.isDotViewEnabled = isDotViewEnabled;
     }
 
-    private void setUsageId(String materialIntroViewId){
+    private void setUsageId(String materialIntroViewId) {
         this.materialIntroViewId = materialIntroViewId;
+    }
+
+    private void setListener(MaterialIntroListener materialIntroListener) {
+        this.materialIntroListener = materialIntroListener;
     }
 
     /**
@@ -575,13 +582,18 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
-        public Builder setId(String materialIntroViewId){
+        public Builder setId(String materialIntroViewId) {
             materialIntroView.setUsageId(materialIntroViewId);
             return this;
         }
 
-        public Builder enableDotAnimation(boolean isDotAnimationEnabled){
+        public Builder enableDotAnimation(boolean isDotAnimationEnabled) {
             materialIntroView.enableDotView(isDotAnimationEnabled);
+            return this;
+        }
+
+        public Builder setListener(MaterialIntroListener materialIntroListener) {
+            materialIntroView.setListener(materialIntroListener);
             return this;
         }
 
