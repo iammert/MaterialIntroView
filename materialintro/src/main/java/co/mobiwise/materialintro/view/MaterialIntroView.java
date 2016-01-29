@@ -25,6 +25,7 @@ import android.widget.TextView;
 import co.mobiwise.materialintro.AnimationFactory;
 import co.mobiwise.materialintro.Constants;
 import co.mobiwise.materialintro.R;
+import co.mobiwise.materialintro.Utils;
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
@@ -393,10 +394,12 @@ public class MaterialIntroView extends RelativeLayout {
         if (dotView.getParent() != null)
             ((ViewGroup) dotView.getParent()).removeView(dotView);
 
-        RelativeLayout.LayoutParams dotViewLayoutParams = (LayoutParams) generateDefaultLayoutParams();
+        RelativeLayout.LayoutParams dotViewLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dotViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
+        dotViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
         dotViewLayoutParams.setMargins(
-                circleShape.getPoint().x - (dotView.getMeasuredWidth() / 2),
-                circleShape.getPoint().y - (dotView.getMeasuredHeight() / 2),
+                circleShape.getPoint().x - (dotViewLayoutParams.width / 2),
+                circleShape.getPoint().y - (dotViewLayoutParams.height / 2),
                 0,
                 0);
         dotView.setLayoutParams(dotViewLayoutParams);

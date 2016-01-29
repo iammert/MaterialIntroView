@@ -89,12 +89,12 @@ public class AnimationFactory {
 
         AnimatorSet animatorSet = new AnimatorSet();
 
-        ValueAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0.50f);
+        ValueAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0.6f);
         scaleX.setRepeatCount(ValueAnimator.INFINITE);
         scaleX.setRepeatMode(ValueAnimator.REVERSE);
         scaleX.setDuration(1000);
 
-        ValueAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 0.50f);
+        ValueAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 0.6f);
         scaleY.setRepeatCount(ValueAnimator.INFINITE);
         scaleY.setRepeatMode(ValueAnimator.REVERSE);
         scaleY.setDuration(1000);
