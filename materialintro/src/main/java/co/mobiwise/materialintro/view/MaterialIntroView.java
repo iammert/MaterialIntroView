@@ -149,6 +149,8 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private View dotView;
 
+    private boolean isDotViewEnabled;
+
     /**
      * When layout completed, we set this true
      * Otherwise onGlobalLayoutListener stuck on loop.
@@ -195,6 +197,7 @@ public class MaterialIntroView extends RelativeLayout {
         dismissOnTouch = false;
         isLayoutCompleted = false;
         isInfoEnabled = false;
+        isDotViewEnabled = false;
 
         /**
          * initialize objects
@@ -222,7 +225,8 @@ public class MaterialIntroView extends RelativeLayout {
                 if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
                         handler.post(() -> setInfoLayout(height, circleShape));
-                    handler.post(() -> setDotViewLayout());
+                    if(isDotViewEnabled)
+                        handler.post(() -> setDotViewLayout());
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
@@ -464,6 +468,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.isInfoEnabled = isInfoEnabled;
     }
 
+    private void enableDotView(boolean isDotViewEnabled){
+        this.isDotViewEnabled = isDotViewEnabled;
+    }
+
     /**
      * Builder Class
      */
@@ -533,6 +541,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder dismissOnTouch(boolean dismissOnTouch) {
             materialIntroView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+
+        public Builder enableDotAnimation(boolean isDotAnimationEnabled){
+            materialIntroView.enableDotView(isDotAnimationEnabled);
             return this;
         }
 

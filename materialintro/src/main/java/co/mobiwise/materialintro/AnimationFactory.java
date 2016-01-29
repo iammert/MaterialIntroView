@@ -89,13 +89,6 @@ public class AnimationFactory {
 
         AnimatorSet animatorSet = new AnimatorSet();
 
-
-        ValueAnimator fadeInOut = ObjectAnimator.ofFloat(view, View.ALPHA, 0f, 1f);
-        fadeInOut.setRepeatCount(ValueAnimator.INFINITE);
-        fadeInOut.setRepeatMode(ValueAnimator.REVERSE);
-        fadeInOut.setDuration(1000);
-
-
         ValueAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0.50f);
         scaleX.setRepeatCount(ValueAnimator.INFINITE);
         scaleX.setRepeatMode(ValueAnimator.REVERSE);
@@ -106,9 +99,8 @@ public class AnimationFactory {
         scaleY.setRepeatMode(ValueAnimator.REVERSE);
         scaleY.setDuration(1000);
 
-        animatorSet.playTogether(fadeInOut, scaleX, scaleY);
+        animatorSet.playTogether(scaleX, scaleY);
         animatorSet.start();
-
     }
 
 }
