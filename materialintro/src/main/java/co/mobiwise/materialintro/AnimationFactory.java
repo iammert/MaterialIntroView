@@ -87,47 +87,26 @@ public class AnimationFactory {
 
     public static void performAnimation(View view) {
 
-        final AnimatorSet animatorSet = new AnimatorSet();
+        AnimatorSet animatorSet = new AnimatorSet();
 
-        Animator.AnimatorListener animatorListener = new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
 
-            }
+        ValueAnimator fadeInOut = ObjectAnimator.ofFloat(view, View.ALPHA, 0f, 1f);
+        fadeInOut.setRepeatCount(ValueAnimator.INFINITE);
+        fadeInOut.setRepeatMode(ValueAnimator.REVERSE);
+        fadeInOut.setDuration(1000);
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (animatorSet.isRunning()) {
-                    view.setScaleX(1f);
-                    view.setScaleY(1f);
-                    view.setTranslationX(0);
-                    animatorSet.start();
-                }
-            }
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+        ValueAnimator scaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0.50f);
+        scaleX.setRepeatCount(ValueAnimator.INFINITE);
+        scaleX.setRepeatMode(ValueAnimator.REVERSE);
+        scaleX.setDuration(1000);
 
-            }
+        ValueAnimator scaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 0.50f);
+        scaleY.setRepeatCount(ValueAnimator.INFINITE);
+        scaleY.setRepeatMode(ValueAnimator.REVERSE);
+        scaleY.setDuration(1000);
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        };
-
-        final ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(view, View.ALPHA, 0f, 1f);
-        fadeInAnim.setDuration(800);
-        final ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 0.50f);
-        scaleDownX.setDuration(800);
-        final ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 0.50f);
-        scaleDownY.setDuration(800);
-        final ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(view, View.ALPHA, 1f, 0f);
-        fadeOutAnim.setDuration(800);
-
-        animatorSet.play(fadeInAnim);
-        animatorSet.play(scaleDownX).with(scaleDownY).after(fadeInAnim);
-        animatorSet.addListener(animatorListener);
+        animatorSet.playTogether(fadeInOut, scaleX, scaleY);
         animatorSet.start();
 
     }

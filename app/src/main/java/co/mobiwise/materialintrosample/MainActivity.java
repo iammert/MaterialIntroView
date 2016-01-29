@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                         .enableFadeAnimation(true)
                         .setTarget(recyclerView.getChildAt(0))
                         .setFocusType(Focus.MINIMUM)
-                        .enableInfoDialog(false)
                         .setInfoText("Hey! Welcome to our app. Why don't you click here and let me guide you a minute. You can not skip this.")
                         .setInfoTextSize(16)
                         .dismissOnTouch(false)

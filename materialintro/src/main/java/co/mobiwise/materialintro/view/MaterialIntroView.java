@@ -194,7 +194,7 @@ public class MaterialIntroView extends RelativeLayout {
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
         isLayoutCompleted = false;
-        isInfoEnabled = true;
+        isInfoEnabled = false;
 
         /**
          * initialize objects
@@ -521,6 +521,7 @@ public class MaterialIntroView extends RelativeLayout {
         }
 
         public Builder setInfoText(String infoText) {
+            materialIntroView.enableInfoDialog(true);
             materialIntroView.setTextViewInfo(infoText);
             return this;
         }
@@ -532,11 +533,6 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder dismissOnTouch(boolean dismissOnTouch) {
             materialIntroView.setDismissOnTouch(dismissOnTouch);
-            return this;
-        }
-
-        public Builder enableInfoDialog(boolean isDialogEnabled) {
-            materialIntroView.enableInfoDialog(isDialogEnabled);
             return this;
         }
 
