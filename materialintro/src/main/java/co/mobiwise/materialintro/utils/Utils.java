@@ -1,4 +1,4 @@
-package co.mobiwise.materialintro;
+package co.mobiwise.materialintro.utils;
 
 import android.content.res.Resources;
 

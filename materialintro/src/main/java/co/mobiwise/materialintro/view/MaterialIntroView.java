@@ -22,10 +22,11 @@ import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import co.mobiwise.materialintro.AnimationFactory;
-import co.mobiwise.materialintro.Constants;
+import co.mobiwise.materialintro.animation.AnimationFactory;
+import co.mobiwise.materialintro.prefs.PreferencesManager;
+import co.mobiwise.materialintro.utils.Constants;
 import co.mobiwise.materialintro.R;
-import co.mobiwise.materialintro.Utils;
+import co.mobiwise.materialintro.utils.Utils;
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
@@ -150,7 +151,24 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private View dotView;
 
+    /**
+     * Dot View will be shown if
+     * this is true
+     */
     private boolean isDotViewEnabled;
+
+    /**
+     * Save/Retrieve status of MaterialIntroView
+     * If Intro is already learnt then don't show
+     * it again.
+     */
+    private PreferencesManager preferencesManager;
+
+    /**
+     * Check using this Id whether user learned
+     * or not.
+     */
+    private String materialIntroViewId;
 
     /**
      * When layout completed, we set this true
@@ -204,6 +222,8 @@ public class MaterialIntroView extends RelativeLayout {
          * initialize objects
          */
         handler = new Handler();
+
+        preferencesManager = new PreferencesManager(context);
 
         eraser = new Paint();
         eraser.setColor(0xFFFFFFFF);
@@ -331,6 +351,9 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private void show(Activity activity) {
 
+        if(preferencesManager.isDisplayed(materialIntroViewId))
+            return;
+
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
 
         setReady(true);
@@ -349,6 +372,7 @@ public class MaterialIntroView extends RelativeLayout {
      * Dismiss Material Intro View
      */
     private void dismiss() {
+        preferencesManager.setDisplayed(materialIntroViewId);
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> setVisibility(INVISIBLE));
     }
 
@@ -475,6 +499,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.isDotViewEnabled = isDotViewEnabled;
     }
 
+    private void setUsageId(String materialIntroViewId){
+        this.materialIntroViewId = materialIntroViewId;
+    }
+
     /**
      * Builder Class
      */
@@ -544,6 +572,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder dismissOnTouch(boolean dismissOnTouch) {
             materialIntroView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+
+        public Builder setId(String materialIntroViewId){
+            materialIntroView.setUsageId(materialIntroViewId);
             return this;
         }
 

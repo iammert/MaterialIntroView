@@ -3,10 +3,8 @@ package co.mobiwise.materialintro.shape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.util.Log;
 
-import co.mobiwise.materialintro.Constants;
+import co.mobiwise.materialintro.utils.Constants;
 import co.mobiwise.materialintro.target.Target;
 
 /**

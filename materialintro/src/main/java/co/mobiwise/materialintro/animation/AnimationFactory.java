@@ -1,4 +1,4 @@
-package co.mobiwise.materialintro;
+package co.mobiwise.materialintro.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

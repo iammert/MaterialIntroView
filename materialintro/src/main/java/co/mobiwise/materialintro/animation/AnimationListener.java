@@ -1,4 +1,4 @@
-package co.mobiwise.materialintro;
+package co.mobiwise.materialintro.animation;
 
 /**
  * Created by mertsimsek on 25/01/16.
