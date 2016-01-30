@@ -21,6 +21,23 @@ new MaterialIntroView.Builder(this)
                 .show();
 ```
 
+# Import
+Project build.gradle
+```java
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+```
+
+Module build.gradle
+```java
+dependencies {
+  compile 'com.github.iammert:MaterialIntroView:1.0'
+}
+```
+
 # Builder Methods
 ```java
 .setMaskColor(Color.Blue) 
