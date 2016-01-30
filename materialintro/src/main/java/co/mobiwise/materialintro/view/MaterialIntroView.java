@@ -12,7 +12,6 @@ import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import co.mobiwise.materialintro.animation.AnimationFactory;
 import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.utils.Constants;
+import co.mobiwise.materialintro.MaterialIntroConfiguration;
 import co.mobiwise.materialintro.R;
 import co.mobiwise.materialintro.utils.Utils;
 import co.mobiwise.materialintro.shape.Circle;
@@ -260,12 +260,13 @@ public class MaterialIntroView extends RelativeLayout {
                 if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
                         handler.post(() -> setInfoLayout(height, circleShape));
-                    if (isDotViewEnabled)
+                    if(isDotViewEnabled)
                         handler.post(() -> setDotViewLayout());
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
         });
+
 
     }
 
@@ -336,7 +337,6 @@ public class MaterialIntroView extends RelativeLayout {
 
                 return true;
             case MotionEvent.ACTION_UP:
-
 
                 if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
@@ -515,8 +515,25 @@ public class MaterialIntroView extends RelativeLayout {
         this.isInfoEnabled = isInfoEnabled;
     }
 
-    private void enableDotView(boolean isDotViewEnabled) {
+    private void enableDotView(boolean isDotViewEnabled){
         this.isDotViewEnabled = isDotViewEnabled;
+    }
+
+    public void setConfiguration(MaterialIntroConfiguration configuration) {
+
+        if (configuration != null) {
+            this.maskColor = configuration.getMaskColor();
+            this.delayMillis = configuration.getDelayMillis();
+            this.isFadeAnimationEnabled = configuration.isFadeAnimationEnabled();
+            this.fadeAnimationDuration = configuration.getFadeAnimationDuration();
+            this.colorTextViewInfo = configuration.getColorTextViewInfo();
+            this.isDotViewEnabled = configuration.isDotViewEnabled();
+            this.isInfoEnabled = configuration.isInfoEnabled();
+            this.dismissOnTouch = configuration.isDismissOnTouch();
+            this.colorTextViewInfo = configuration.getColorTextViewInfo();
+            this.focusType = configuration.getFocusType();
+            this.focusGravity = configuration.getFocusGravity();
+        }
     }
 
     private void setUsageId(String materialIntroViewId) {
@@ -610,6 +627,12 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableDotAnimation(boolean isDotAnimationEnabled) {
             materialIntroView.enableDotView(isDotAnimationEnabled);
+            return this;
+        }
+
+        public Builder setConfiguration(MaterialIntroConfiguration
+                                                configuration) {
+            materialIntroView.setConfiguration(configuration);
             return this;
         }
 
