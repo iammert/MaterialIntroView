@@ -1,6 +1,8 @@
 # MaterialIntroView [Beta]
 Material Intro View is a showcase android library.
 
+We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and we love it. Then decided to create showcase just like it.
+
 #Screen
 <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/materialintroviewgif.gif"/>
 
@@ -17,6 +19,23 @@ new MaterialIntroView.Builder(this)
                 .setTarget(view)
                 .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
                 .show();
+```
+
+# Import
+Project build.gradle
+```java
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+```
+
+Module build.gradle
+```java
+dependencies {
+  compile 'com.github.iammert:MaterialIntroView:1.0'
+}
 ```
 
 # Builder Methods
@@ -76,7 +95,9 @@ new MaterialIntroView.Builder(this)
                         
                     }
                 })
+                
 ```
+# Configuration Method
 ```java
 //Create global config instance to not write same config to builder
 //again and again.
@@ -93,8 +114,35 @@ config.setFadeAnimationEnabled(true);
 
 <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
 
+# TODO
+
+* [ ] Sample app will be more detailed about using library.
+* [ ] Sequence for MaterialIntroViews
+
+#Authors
+
+[Mert SIMSEK](https://github.com/iammert)
+
+[Murat Can BUR](https://github.com/muratcanbur)
 
 
+License
+--------
+
+
+    Copyright 2015 Mert Şimşek.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 
 
