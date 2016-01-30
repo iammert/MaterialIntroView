@@ -122,19 +122,16 @@ public class MainActivity extends AppCompatActivity
 
     private void showCardViewIntro(View view){
 
-        MaterialIntroConfiguration config = new MaterialIntroConfiguration();
-        config.setFocusGravity(FocusGravity.LEFT);
-        config.setFocusType(Focus.MINIMUM);
-        config.setDelayMillis(1000);
-        config.setDotViewEnabled(true);
-        config.setFadeAnimationEnabled(true);
-
         new MaterialIntroView.Builder(this)
                 .enableDotAnimation(true)
-                .setConfiguration(config)
                 .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
                 .setInfoText("Hi There! Click this card and see what happens.")
                 .setTarget(view)
+                .setUsageId("intro_card")
                 .show();
     }
 }
