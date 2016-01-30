@@ -30,11 +30,15 @@ new MaterialIntroView.Builder(this)
 .enableFadeAnimation(true) //View will appear/disappear with fade in/out animation
 ```
 ```java
+//ie. If your button's width has MATCH_PARENT.
+//Focus.ALL is not a good option. You can use
+//Focus.MINIMUM or Focus.NORMAL. See demos below.
 .setFocusType(Focus.MINIMUM)
 .setFocusType(Focus.NORMAL)
 .setFocusType(Focus.ALL)
 ```
 ```java
+//ie. You can focus on left of RecyclerView list item.
 .setFocusGravity(FocusGravity.LEFT)
 .setFocusType(FocusGravity.CENTER)
 .setFocusType(FocusGravity.RIGHT)
