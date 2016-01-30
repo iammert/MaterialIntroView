@@ -1,6 +1,8 @@
 # MaterialIntroView [Beta]
 Material Intro View is a showcase android library.
 
+We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and we love it. Then decided to create showcase just like it.
+
 #Screen
 <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/materialintroviewgif.gif"/>
 
