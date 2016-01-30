@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -182,6 +183,12 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private MaterialIntroListener materialIntroListener;
 
+    /**
+     * Perform click operation to target
+     * if this is true
+     */
+    private boolean isPerformClick;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -218,11 +225,12 @@ public class MaterialIntroView extends RelativeLayout {
         focusType = Focus.ALL;
         focusGravity = FocusGravity.CENTER;
         isReady = false;
-        isFadeAnimationEnabled = false;
+        isFadeAnimationEnabled = true;
         dismissOnTouch = false;
         isLayoutCompleted = false;
         isInfoEnabled = false;
         isDotViewEnabled = false;
+        isPerformClick = false;
 
         /**
          * initialize objects
@@ -321,7 +329,7 @@ public class MaterialIntroView extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                if (isTouchOnFocus) {
+                if (isTouchOnFocus && isPerformClick) {
                     targetView.getView().setPressed(true);
                     targetView.getView().invalidate();
                 }
@@ -329,8 +337,17 @@ public class MaterialIntroView extends RelativeLayout {
                 return true;
             case MotionEvent.ACTION_UP:
 
+
                 if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
+
+                if (isTouchOnFocus && isPerformClick) {
+                    targetView.getView().performClick();
+                    targetView.getView().setPressed(true);
+                    targetView.getView().invalidate();
+                    targetView.getView().setPressed(false);
+                    targetView.getView().invalidate();
+                }
 
                 return true;
             default:
@@ -510,6 +527,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.materialIntroListener = materialIntroListener;
     }
 
+    private void setPerformClick(boolean isPerformClick){
+        this.isPerformClick = isPerformClick;
+    }
+
     /**
      * Builder Class
      */
@@ -582,7 +603,7 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
-        public Builder setId(String materialIntroViewId) {
+        public Builder setUsageId(String materialIntroViewId) {
             materialIntroView.setUsageId(materialIntroViewId);
             return this;
         }
@@ -594,6 +615,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder setListener(MaterialIntroListener materialIntroListener) {
             materialIntroView.setListener(materialIntroListener);
+            return this;
+        }
+
+        public Builder performClick(boolean isPerformClick){
+            materialIntroView.setPerformClick(isPerformClick);
             return this;
         }
 

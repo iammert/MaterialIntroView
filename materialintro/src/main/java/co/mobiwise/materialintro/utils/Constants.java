@@ -9,7 +9,7 @@ public class Constants {
 
     public static long DEFAULT_DELAY_MILLIS = 0;
 
-    public static long DEFAULT_FADE_DURATION = 500;
+    public static long DEFAULT_FADE_DURATION = 700;
 
     public static int DEFAULT_TARGET_PADDING = 10;
 
