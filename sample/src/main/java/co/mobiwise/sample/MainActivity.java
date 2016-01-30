@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(500)
+                .setTargetPadding(70)
                 .enableFadeAnimation(true)
                 .performClick(true)
                 .setInfoText("Hi There! Click this card and see what happens.")
