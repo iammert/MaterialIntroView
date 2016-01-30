@@ -76,7 +76,9 @@ new MaterialIntroView.Builder(this)
                         
                     }
                 })
+                
 ```
+# Configuration Method
 ```java
 //Create global config instance to not write same config to builder
 //again and again.
