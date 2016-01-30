@@ -1,4 +1,4 @@
-# MaterialIntroView
+# MaterialIntroView [Beta]
 Material Intro View is a showcase android library.
 
 #Screen
