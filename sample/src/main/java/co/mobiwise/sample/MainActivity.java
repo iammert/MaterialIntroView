@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import co.mobiwise.materialintro.MaterialIntroConfiguration;
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showCardViewIntro(View view){
+
 
         new MaterialIntroView.Builder(this)
                 .enableDotAnimation(true)
