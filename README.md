@@ -85,13 +85,9 @@ config.setFadeAnimationEnabled(true);
 
 # Demos
 
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_drawer.png"/>
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_drawer.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_all.png"/>
 
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_all.png"/>
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/>
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
 
 
 
