@@ -13,9 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.Toast;
 
+import co.mobiwise.materialintro.MaterialIntroConfiguration;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.view.MaterialIntroView;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),"Clicked!",Toast.LENGTH_SHORT).show();
             }
         });
+
         showCardViewIntro(cardView);
 
     }
@@ -118,28 +120,21 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private ImageButton getDrawer(Toolbar toolbar){
-
-        for (int i = 0; i< toolbar.getChildCount() ; i++){
-            if(toolbar.getChildAt(i) instanceof ImageButton)
-                return (ImageButton) toolbar.getChildAt(i);
-        }
-        return null;
-    }
-
     private void showCardViewIntro(View view){
 
+        MaterialIntroConfiguration config = new MaterialIntroConfiguration();
+        config.setFocusGravity(FocusGravity.LEFT);
+        config.setFocusType(Focus.MINIMUM);
+        config.setDelayMillis(1000);
+        config.setDotViewEnabled(true);
+        config.setFadeAnimationEnabled(true);
+
         new MaterialIntroView.Builder(this)
-                .dismissOnTouch(false)
-                .setDelayMillis(600)
                 .enableDotAnimation(true)
+                .setConfiguration(config)
                 .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .setInfoText("Hi There! This is info card about focused target. You can set this text!")
+                .setInfoText("Hi There! Click this card and see what happens.")
                 .setTarget(view)
-                .setTargetPadding(40)
-                .setUsageId("intro_cardview")
-                .performClick(true)
                 .show();
     }
 }

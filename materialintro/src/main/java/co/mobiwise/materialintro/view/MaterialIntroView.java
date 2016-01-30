@@ -525,10 +525,8 @@ public class MaterialIntroView extends RelativeLayout {
             this.maskColor = configuration.getMaskColor();
             this.delayMillis = configuration.getDelayMillis();
             this.isFadeAnimationEnabled = configuration.isFadeAnimationEnabled();
-            this.fadeAnimationDuration = configuration.getFadeAnimationDuration();
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.isDotViewEnabled = configuration.isDotViewEnabled();
-            this.isInfoEnabled = configuration.isInfoEnabled();
             this.dismissOnTouch = configuration.isDismissOnTouch();
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.focusType = configuration.getFocusType();
@@ -630,8 +628,7 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
-        public Builder setConfiguration(MaterialIntroConfiguration
-                                                configuration) {
+        public Builder setConfiguration(MaterialIntroConfiguration configuration) {
             materialIntroView.setConfiguration(configuration);
             return this;
         }
