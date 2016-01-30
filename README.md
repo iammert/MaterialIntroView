@@ -83,6 +83,75 @@ config.setFadeAnimationEnabled(true);
 .setConfiguration(config) //
 ```
 
+# Demos
+
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_drawer.png"/>
+```java
+new MaterialIntroView.Builder(this)
+                .enableDotAnimation(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .setTargetPadding(70)
+                .enableFadeAnimation(true)
+                .performClick(true) //Drawer will open on clicked
+                .setInfoText("Hi There! This is drawer. It doesn't have dot animation because we want to drawer icon")
+                .setTarget(DRAWER_VIEW) 
+                .setUsageId("intro_drawer") //THIS SHOULD BE UNIQUE ID
+                .show();
+```
+
+
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_all.png"/>
+```java
+new MaterialIntroView.Builder(this)
+                .enableDotAnimation(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.ALL) //This is the point
+                .setDelayMillis(500)
+                .setTargetPadding(30)
+                .enableFadeAnimation(true)
+                .performClick(true) //Drawer will open on clicked
+                .setInfoText("Hi There! This is drawer. It doesn't have dot animation because we want to drawer icon")
+                .setTarget(DRAWER_VIEW) 
+                .setUsageId("intro_button") //THIS SHOULD BE UNIQUE ID
+                .show();
+```
+
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/>
+```java
+new MaterialIntroView.Builder(this)
+                .enableDotAnimation(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.NORMAL) //This is the point
+                .setDelayMillis(500)
+                .setTargetPadding(70)
+                .enableFadeAnimation(true)
+                .performClick(true) //Drawer will open on clicked
+                .setInfoText("Hi There! This is drawer. It doesn't have dot animation because we want to drawer icon")
+                .setTarget(DRAWER_VIEW) 
+                .setUsageId("intro_button") //THIS SHOULD BE UNIQUE ID
+                .show();
+```
+
+
+<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
+```java
+new MaterialIntroView.Builder(this)
+                .enableDotAnimation(false)
+                .setFocusGravity(FocusGravity.LEFT) // set gravity left
+                .setFocusType(Focus.NORMAL)
+                .setDelayMillis(500)
+                .setTargetPadding(70)
+                .enableFadeAnimation(true)
+                .performClick(true) //Drawer will open on clicked
+                .setInfoText("Hi There! You can also change gravity. Left, Right, Center!")
+                .setTarget(DRAWER_VIEW) 
+                .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
+                .show();
+```
+
+
 
 
 
