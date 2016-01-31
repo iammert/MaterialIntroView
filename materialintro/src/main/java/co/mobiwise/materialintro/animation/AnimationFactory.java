@@ -20,7 +20,7 @@ public class AnimationFactory {
      * @param duration
      * @param onAnimationStartListener
      */
-    public static void animateFadeIn(View view, long duration, AnimationListener.OnAnimationStartListener onAnimationStartListener) {
+    public static void animateFadeIn(View view, long duration, final AnimationListener.OnAnimationStartListener onAnimationStartListener) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
         objectAnimator.setDuration(duration);
         objectAnimator.addListener(new Animator.AnimatorListener() {
@@ -57,7 +57,7 @@ public class AnimationFactory {
      * @param duration
      * @param onAnimationEndListener
      */
-    public static void animateFadeOut(View view, long duration, AnimationListener.OnAnimationEndListener onAnimationEndListener) {
+    public static void animateFadeOut(View view, long duration, final AnimationListener.OnAnimationEndListener onAnimationEndListener) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1, 0);
         objectAnimator.setDuration(duration);
         objectAnimator.addListener(new Animator.AnimatorListener() {

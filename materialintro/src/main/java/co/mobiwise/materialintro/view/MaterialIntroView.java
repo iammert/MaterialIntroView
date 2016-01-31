@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.mobiwise.materialintro.animation.AnimationFactory;
+import co.mobiwise.materialintro.animation.AnimationListener;
 import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.utils.Constants;
@@ -259,9 +260,9 @@ public class MaterialIntroView extends RelativeLayout {
                 circleShape.reCalculateAll();
                 if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
-                        handler.post(() -> setInfoLayout(height, circleShape));
+                        setInfoLayout();
                     if(isDotViewEnabled)
-                        handler.post(() -> setDotViewLayout());
+                        setDotViewLayout();
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
@@ -372,13 +373,20 @@ public class MaterialIntroView extends RelativeLayout {
 
         setReady(true);
 
-        handler.postDelayed(() -> {
-            if (isFadeAnimationEnabled)
-                AnimationFactory.animateFadeIn(this, fadeAnimationDuration, () -> setVisibility(VISIBLE));
-            else
-                setVisibility(VISIBLE);
-
-        }, delayMillis);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isFadeAnimationEnabled)
+                    AnimationFactory.animateFadeIn(MaterialIntroView.this, fadeAnimationDuration, new AnimationListener.OnAnimationStartListener() {
+                        @Override
+                        public void onAnimationStart() {
+                            setVisibility(VISIBLE);
+                        }
+                    });
+                else
+                    setVisibility(VISIBLE);
+            }
+        },delayMillis);
 
     }
 
@@ -387,12 +395,14 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private void dismiss() {
         preferencesManager.setDisplayed(materialIntroViewId);
-        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, () -> {
-            setVisibility(INVISIBLE);
+        AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd() {
+                setVisibility(INVISIBLE);
 
-            if (materialIntroListener != null)
-                materialIntroListener.onUserClicked(materialIntroViewId);
-
+                if (materialIntroListener != null)
+                    materialIntroListener.onUserClicked(materialIntroViewId);
+            }
         });
     }
 
@@ -401,57 +411,73 @@ public class MaterialIntroView extends RelativeLayout {
      * circle. If circle's Y coordiante is bigger than
      * Y coordinate of root view, then locate cardview
      * above the circle. Otherwise locate below.
-     *
-     * @param viewPositionY
-     * @param circle
      */
-    private void setInfoLayout(int viewPositionY, Circle circle) {
+    private void setInfoLayout() {
 
-        isLayoutCompleted = true;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                isLayoutCompleted = true;
 
-        if (infoView.getParent() != null)
-            ((ViewGroup) infoView.getParent()).removeView(infoView);
+                if (infoView.getParent() != null)
+                    ((ViewGroup) infoView.getParent()).removeView(infoView);
 
-        RelativeLayout.LayoutParams infoDialogParams = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
+                RelativeLayout.LayoutParams infoDialogParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.FILL_PARENT);
 
-        if (circle.getPoint().y < viewPositionY / 2) {
-            ((RelativeLayout) infoView).setGravity(Gravity.TOP);
-            infoDialogParams.setMargins(0, circle.getPoint().y + circle.getRadius(), 0, 0);
-        } else {
-            ((RelativeLayout) infoView).setGravity(Gravity.BOTTOM);
-            infoDialogParams.setMargins(0, 0, 0, height - (circle.getPoint().y + circle.getRadius()) + 2 * circle.getRadius());
-        }
+                if (circleShape.getPoint().y < height / 2) {
+                    ((RelativeLayout) infoView).setGravity(Gravity.TOP);
+                    infoDialogParams.setMargins(
+                            0,
+                            circleShape.getPoint().y + circleShape.getRadius(),
+                            0,
+                            0);
+                } else {
+                    ((RelativeLayout) infoView).setGravity(Gravity.BOTTOM);
+                    infoDialogParams.setMargins(
+                            0,
+                            0,
+                            0,
+                            height - (circleShape.getPoint().y + circleShape.getRadius()) + 2 * circleShape.getRadius());
+                }
 
-        infoView.setLayoutParams(infoDialogParams);
-        infoView.postInvalidate();
+                infoView.setLayoutParams(infoDialogParams);
+                infoView.postInvalidate();
 
-        addView(infoView);
+                addView(infoView);
 
-        infoView.setVisibility(VISIBLE);
+                infoView.setVisibility(VISIBLE);
 
+            }
+        });
     }
 
     private void setDotViewLayout() {
 
-        if (dotView.getParent() != null)
-            ((ViewGroup) dotView.getParent()).removeView(dotView);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
 
-        RelativeLayout.LayoutParams dotViewLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        dotViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
-        dotViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
-        dotViewLayoutParams.setMargins(
-                circleShape.getPoint().x - (dotViewLayoutParams.width / 2),
-                circleShape.getPoint().y - (dotViewLayoutParams.height / 2),
-                0,
-                0);
-        dotView.setLayoutParams(dotViewLayoutParams);
-        dotView.postInvalidate();
-        addView(dotView);
+                if (dotView.getParent() != null)
+                    ((ViewGroup) dotView.getParent()).removeView(dotView);
 
-        dotView.setVisibility(VISIBLE);
-        AnimationFactory.performAnimation(dotView);
+                RelativeLayout.LayoutParams dotViewLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dotViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
+                dotViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
+                dotViewLayoutParams.setMargins(
+                        circleShape.getPoint().x - (dotViewLayoutParams.width / 2),
+                        circleShape.getPoint().y - (dotViewLayoutParams.height / 2),
+                        0,
+                        0);
+                dotView.setLayoutParams(dotViewLayoutParams);
+                dotView.postInvalidate();
+                addView(dotView);
+
+                dotView.setVisibility(VISIBLE);
+                AnimationFactory.performAnimation(dotView);
+            }
+        });
     }
 
     /**
