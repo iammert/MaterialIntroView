@@ -25,6 +25,6 @@ public class PreferencesManager {
     }
 
     public void reset(String id){
-        sharedPreferences.edit().putBoolean(id, false);
+        sharedPreferences.edit().putBoolean(id, false).apply();
     }
 }
