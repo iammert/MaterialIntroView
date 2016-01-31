@@ -398,7 +398,7 @@ public class MaterialIntroView extends RelativeLayout {
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
             @Override
             public void onAnimationEnd() {
-                setVisibility(INVISIBLE);
+                setVisibility(GONE);
 
                 if (materialIntroListener != null)
                     materialIntroListener.onUserClicked(materialIntroViewId);
