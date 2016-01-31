@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -399,11 +400,17 @@ public class MaterialIntroView extends RelativeLayout {
             @Override
             public void onAnimationEnd() {
                 setVisibility(GONE);
+                removeMaterialView();
 
                 if (materialIntroListener != null)
                     materialIntroListener.onUserClicked(materialIntroViewId);
             }
         });
+    }
+
+    private void removeMaterialView(){
+        if(getParent() != null )
+            ((ViewGroup) getParent()).removeView(this);
     }
 
     /**

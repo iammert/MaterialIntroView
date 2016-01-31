@@ -34,7 +34,7 @@ repositories {
 Module build.gradle
 ```java
 dependencies {
-  compile 'com.github.iammert:MaterialIntroView:1.3'
+  compile 'com.github.iammert:MaterialIntroView:1.4'
 }
 ```
 
