@@ -264,12 +264,20 @@ public class MaterialIntroView extends RelativeLayout {
                         setInfoLayout();
                     if(isDotViewEnabled)
                         setDotViewLayout();
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    removeOnGlobalLayoutListener(MaterialIntroView.this, this);
                 }
             }
         });
 
+    }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
+        if (Build.VERSION.SDK_INT < 16) {
+            v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+        } else {
+            v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+        }
     }
 
     @Override

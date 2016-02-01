@@ -21,7 +21,6 @@ import co.mobiwise.sample.R;
 public class MainFragment extends Fragment implements View.OnClickListener{
 
     private static final String INTRO_CARD = "material_intro";
-    private static final String INTRO_RESET_BUTTON = "material_reset";
 
     private CardView cardView;
     private Button button;

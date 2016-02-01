@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "co.mobiwise.sample"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -24,6 +24,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    //compile 'com.github.iammert:MaterialIntroView:a4b7947d19'
+    //compile 'com.github.iammert:MaterialIntroView:1.4'
     compile project(':materialintro')
 }
