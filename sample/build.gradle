@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     //compile 'com.github.iammert:MaterialIntroView:1.4'
     compile project(':materialintro')
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

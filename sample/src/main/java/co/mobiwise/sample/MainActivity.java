@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import co.mobiwise.sample.fragment.FocusFragment;
 import co.mobiwise.sample.fragment.GravityFragment;
 import co.mobiwise.sample.fragment.MainFragment;
+import co.mobiwise.sample.fragment.RecyclerviewFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,10 +25,10 @@ public class MainActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(savedInstanceState == null)
+        if (savedInstanceState == null)
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container,new MainFragment())
+                    .add(R.id.container, new MainFragment())
                     .commit();
 
 
@@ -81,14 +82,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if(id == R.id.nav_demo){
+        if (id == R.id.nav_demo) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
-        }else if (id == R.id.nav_gravity) {
+        } else if (id == R.id.nav_gravity) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new GravityFragment()).commit();
         } else if (id == R.id.nav_focus) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new FocusFragment()).commit();
         } else if (id == R.id.nav_recyclerview) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecyclerviewFragment()).commit();
         } else if (id == R.id.nav_toolbar) {
 
         } else if (id == R.id.nav_tab) {
