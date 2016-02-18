@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -162,6 +163,17 @@ public class MaterialIntroView extends RelativeLayout {
     private boolean isDotViewEnabled;
 
     /**
+     * Info Dialog Icon
+     */
+    private ImageView imageViewIcon;
+
+    /**
+     * Image View will be shown if
+     * this is true
+     */
+    private boolean isImageViewEnabled;
+
+    /**
      * Save/Retrieve status of MaterialIntroView
      * If Intro is already learnt then don't show
      * it again.
@@ -233,6 +245,7 @@ public class MaterialIntroView extends RelativeLayout {
         isInfoEnabled = false;
         isDotViewEnabled = false;
         isPerformClick = false;
+        isImageViewEnabled = true;
 
         /**
          * initialize objects
@@ -251,6 +264,7 @@ public class MaterialIntroView extends RelativeLayout {
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
+        imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
 
         dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
         dotView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -462,8 +476,11 @@ public class MaterialIntroView extends RelativeLayout {
 
                 addView(infoView);
 
-                infoView.setVisibility(VISIBLE);
+                if (!isImageViewEnabled){
+                    imageViewIcon.setVisibility(GONE);
+                }
 
+                infoView.setVisibility(VISIBLE);
             }
         });
     }
@@ -554,6 +571,10 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void enableInfoDialog(boolean isInfoEnabled) {
         this.isInfoEnabled = isInfoEnabled;
+    }
+
+    private void enableImageViewIcon(boolean isImageViewEnabled){
+        this.isImageViewEnabled = isImageViewEnabled;
     }
 
     private void enableDotView(boolean isDotViewEnabled){
@@ -666,6 +687,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableDotAnimation(boolean isDotAnimationEnabled) {
             materialIntroView.enableDotView(isDotAnimationEnabled);
+            return this;
+        }
+
+        public Builder enableIcon(boolean isImageViewIconEnabled) {
+            materialIntroView.enableImageViewIcon(isImageViewIconEnabled);
             return this;
         }
 
