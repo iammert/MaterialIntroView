@@ -10,6 +10,7 @@ We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and w
 ```java
 new MaterialIntroView.Builder(this)
                 .enableDotAnimation(true)
+				.enableIcon(false) // TURN OFF HELPER ICON, DEFAULT IS TRUE
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(500)
@@ -82,6 +83,9 @@ dependencies {
 ```
 ```java
 .enableDotAnimation(true) //Shows dot animation center of focus area
+```
+```java
+.enableIcon(false) // TURN OFF HELPER ICON, DEFAULT IS TRUE
 ```
 ```java
 .performClick(true) //Trigger click operation when user click focused area.
