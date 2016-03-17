@@ -12,7 +12,6 @@ import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,19 +23,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.mobiwise.materialintro.MaterialIntroConfiguration;
+import co.mobiwise.materialintro.R;
 import co.mobiwise.materialintro.animation.AnimationFactory;
 import co.mobiwise.materialintro.animation.AnimationListener;
 import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
-import co.mobiwise.materialintro.utils.Constants;
-import co.mobiwise.materialintro.MaterialIntroConfiguration;
-import co.mobiwise.materialintro.R;
-import co.mobiwise.materialintro.utils.Utils;
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.target.Target;
 import co.mobiwise.materialintro.target.ViewTarget;
+import co.mobiwise.materialintro.utils.Constants;
+import co.mobiwise.materialintro.utils.Utils;
 
 /**
  * Created by mertsimsek on 22/01/16.
@@ -203,6 +202,11 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean isPerformClick;
 
+    /**
+     * Disallow this MaterialIntroView from showing up more than once at a time
+     */
+    private boolean isIdempotent;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -246,6 +250,7 @@ public class MaterialIntroView extends RelativeLayout {
         isDotViewEnabled = false;
         isPerformClick = false;
         isImageViewEnabled = true;
+        isIdempotent = false;
 
         /**
          * initialize objects
@@ -409,15 +414,21 @@ public class MaterialIntroView extends RelativeLayout {
                 else
                     setVisibility(VISIBLE);
             }
-        },delayMillis);
+        }, delayMillis);
 
+        if(isIdempotent) {
+            preferencesManager.setDisplayed(materialIntroViewId);
+        }
     }
 
     /**
      * Dismiss Material Intro View
      */
     public void dismiss() {
-        preferencesManager.setDisplayed(materialIntroViewId);
+        if(!isIdempotent) {
+            preferencesManager.setDisplayed(materialIntroViewId);
+        }
+
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
             @Override
             public void onAnimationEnd() {
@@ -577,6 +588,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.isImageViewEnabled = isImageViewEnabled;
     }
 
+    private void setIdempotent(boolean idempotent){
+        this.isIdempotent = idempotent;
+    }
+
     private void enableDotView(boolean isDotViewEnabled){
         this.isDotViewEnabled = isDotViewEnabled;
     }
@@ -692,6 +707,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableIcon(boolean isImageViewIconEnabled) {
             materialIntroView.enableImageViewIcon(isImageViewIconEnabled);
+            return this;
+        }
+
+        public Builder setIdempotent(boolean idempotent) {
+            materialIntroView.setIdempotent(idempotent);
             return this;
         }
 
