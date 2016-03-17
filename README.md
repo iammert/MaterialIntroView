@@ -139,12 +139,11 @@ public class MyShape extends Shape {
 ```
 
 # Demos
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_drawer.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_all.png"/>
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_rectangle.png"/>
+![Alt text](/art/art_drawer.png?raw=true)
+![Alt text](/art/art_focus_all.png?raw=true)
+![Alt text](/art/art_focus_normal.png?raw=true)
+![Alt text](/art/art_gravity_left.png?raw=true)
+![Alt text](/art/art_rectangle.png?raw=true)
 # TODO
 
 * [ ] Sample app will be more detailed about using library.
