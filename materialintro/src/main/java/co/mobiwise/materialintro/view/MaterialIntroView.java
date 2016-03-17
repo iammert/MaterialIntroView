@@ -424,7 +424,7 @@ public class MaterialIntroView extends RelativeLayout {
     /**
      * Dismiss Material Intro View
      */
-    private void dismiss() {
+    public void dismiss() {
         if(!isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
         }
