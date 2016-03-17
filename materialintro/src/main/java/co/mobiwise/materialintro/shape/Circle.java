@@ -61,7 +61,7 @@ public class Circle extends Shape {
 
     @Override
     public int getHeight() {
-        return getRadius();
+        return 2 * getRadius();
     }
 
     @Override

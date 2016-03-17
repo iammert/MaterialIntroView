@@ -476,7 +476,7 @@ public class MaterialIntroView extends RelativeLayout {
                     ((RelativeLayout) infoView).setGravity(Gravity.TOP);
                     infoDialogParams.setMargins(
                             0,
-                            targetShape.getPoint().y + targetShape.getHeight(),
+                            targetShape.getPoint().y + targetShape.getHeight() / 2,
                             0,
                             0);
                 } else {
@@ -485,7 +485,7 @@ public class MaterialIntroView extends RelativeLayout {
                             0,
                             0,
                             0,
-                            height - (targetShape.getPoint().y + targetShape.getHeight()) + 2 * targetShape.getHeight());
+                            height - (targetShape.getPoint().y + targetShape.getHeight() / 2) + 2 * targetShape.getHeight() / 2);
                 }
 
                 infoView.setLayoutParams(infoDialogParams);
