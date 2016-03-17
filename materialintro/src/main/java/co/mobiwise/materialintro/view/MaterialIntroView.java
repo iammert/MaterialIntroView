@@ -215,6 +215,11 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private ShapeType shapeType;
 
+    /**
+     * Use custom shape
+     */
+    private boolean usesCustomShape = false;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -355,13 +360,7 @@ public class MaterialIntroView extends RelativeLayout {
         float xT = event.getX();
         float yT = event.getY();
 
-        int xV = targetShape.getPoint().x;
-        int yV = targetShape.getPoint().y;
-
-        double dx = Math.pow(xT - xV, 2);
-        double dy = Math.pow(yT - yV, 2);
-
-        boolean isTouchOnFocus = targetShape.isTouchOnFocus(dx, dy);
+        boolean isTouchOnFocus = targetShape.isTouchOnFocus(xT, yT);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -741,12 +740,23 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
+        public Builder setCustomShape(Shape shape) {
+            materialIntroView.usesCustomShape = true;
+            materialIntroView.setShape(shape);
+            return this;
+        }
+
         public Builder performClick(boolean isPerformClick){
             materialIntroView.setPerformClick(isPerformClick);
             return this;
         }
 
         public MaterialIntroView build() {
+            if(materialIntroView.usesCustomShape) {
+                return materialIntroView;
+            }
+
+            // no custom shape supplied, build our own
             Shape shape;
 
             if(materialIntroView.shapeType == ShapeType.CIRCLE) {

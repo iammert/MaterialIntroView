@@ -62,9 +62,8 @@ public class Rect extends Shape {
     }
 
     @Override
-    public boolean isTouchOnFocus(double dx, double dy) {
-        //TODO fix this
-        return true;
+    public boolean isTouchOnFocus(double x, double y) {
+        return adjustedRect.contains((float) x, (float) y);
     }
 
 }

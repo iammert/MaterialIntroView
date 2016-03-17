@@ -56,5 +56,11 @@ public abstract class Shape {
 
     public abstract int getHeight();
 
-    public abstract boolean isTouchOnFocus(double dx, double dy);
+    /**
+     * Determines if a click is on the shape
+     * @param x x-axis location of click
+     * @param y y-axis location of click
+     * @return true if click is inside shape
+     */
+    public abstract boolean isTouchOnFocus(double x, double t);
 }

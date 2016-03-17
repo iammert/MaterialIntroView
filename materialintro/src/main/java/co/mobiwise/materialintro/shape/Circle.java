@@ -65,7 +65,12 @@ public class Circle extends Shape {
     }
 
     @Override
-    public boolean isTouchOnFocus(double dx, double dy) {
+    public boolean isTouchOnFocus(double x, double y) {
+        int xV = getPoint().x;
+        int yV = getPoint().y;
+
+        double dx = Math.pow(x - xV, 2);
+        double dy = Math.pow(y - yV, 2);
         return (dx + dy) <= Math.pow(radius, 2);
     }
 
