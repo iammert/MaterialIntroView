@@ -32,6 +32,9 @@ import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.shape.Circle;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.Rect;
+import co.mobiwise.materialintro.shape.Shape;
+import co.mobiwise.materialintro.shape.ShapeType;
 import co.mobiwise.materialintro.target.Target;
 import co.mobiwise.materialintro.target.ViewTarget;
 import co.mobiwise.materialintro.utils.Constants;
@@ -73,10 +76,10 @@ public class MaterialIntroView extends RelativeLayout {
     private long fadeAnimationDuration;
 
     /**
-     * circleShape focus on target
+     * targetShape focus on target
      * and clear circle to focus
      */
-    private Circle circleShape;
+    private Shape targetShape;
 
     /**
      * Focus Type
@@ -207,6 +210,11 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean isIdempotent;
 
+    /**
+     * Shape of target
+     */
+    private ShapeType shapeType;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -242,6 +250,7 @@ public class MaterialIntroView extends RelativeLayout {
         colorTextViewInfo = Constants.DEFAULT_COLOR_TEXTVIEW_INFO;
         focusType = Focus.ALL;
         focusGravity = FocusGravity.CENTER;
+        shapeType = ShapeType.CIRCLE;
         isReady = false;
         isFadeAnimationEnabled = true;
         dismissOnTouch = false;
@@ -277,8 +286,8 @@ public class MaterialIntroView extends RelativeLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                circleShape.reCalculateAll();
-                if (circleShape != null && circleShape.getPoint().y != 0 && !isLayoutCompleted) {
+                targetShape.reCalculateAll();
+                if (targetShape != null && targetShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
                         setInfoLayout();
                     if(isDotViewEnabled)
@@ -329,7 +338,7 @@ public class MaterialIntroView extends RelativeLayout {
         /**
          * Clear focus area
          */
-        circleShape.draw(this.canvas, eraser, padding);
+        targetShape.draw(this.canvas, eraser, padding);
 
         canvas.drawBitmap(bitmap, 0, 0, null);
     }
@@ -346,15 +355,13 @@ public class MaterialIntroView extends RelativeLayout {
         float xT = event.getX();
         float yT = event.getY();
 
-        int xV = circleShape.getPoint().x;
-        int yV = circleShape.getPoint().y;
-
-        int radius = circleShape.getRadius();
+        int xV = targetShape.getPoint().x;
+        int yV = targetShape.getPoint().y;
 
         double dx = Math.pow(xT - xV, 2);
         double dy = Math.pow(yT - yV, 2);
 
-        boolean isTouchOnFocus = (dx + dy) <= Math.pow(radius, 2);
+        boolean isTouchOnFocus = targetShape.isTouchOnFocus(dx, dy);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -466,11 +473,11 @@ public class MaterialIntroView extends RelativeLayout {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.FILL_PARENT);
 
-                if (circleShape.getPoint().y < height / 2) {
+                if (targetShape.getPoint().y < height / 2) {
                     ((RelativeLayout) infoView).setGravity(Gravity.TOP);
                     infoDialogParams.setMargins(
                             0,
-                            circleShape.getPoint().y + circleShape.getRadius(),
+                            targetShape.getPoint().y + targetShape.getHeight(),
                             0,
                             0);
                 } else {
@@ -479,7 +486,7 @@ public class MaterialIntroView extends RelativeLayout {
                             0,
                             0,
                             0,
-                            height - (circleShape.getPoint().y + circleShape.getRadius()) + 2 * circleShape.getRadius());
+                            height - (targetShape.getPoint().y + targetShape.getHeight()) + 2 * targetShape.getHeight());
                 }
 
                 infoView.setLayoutParams(infoDialogParams);
@@ -509,8 +516,8 @@ public class MaterialIntroView extends RelativeLayout {
                 dotViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
                 dotViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
                 dotViewLayoutParams.setMargins(
-                        circleShape.getPoint().x - (dotViewLayoutParams.width / 2),
-                        circleShape.getPoint().y - (dotViewLayoutParams.height / 2),
+                        targetShape.getPoint().x - (dotViewLayoutParams.width / 2),
+                        targetShape.getPoint().y - (dotViewLayoutParams.height / 2),
                         0,
                         0);
                 dotView.setLayoutParams(dotViewLayoutParams);
@@ -539,6 +546,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.isFadeAnimationEnabled = isFadeAnimationEnabled;
     }
 
+    private void setShapeType(ShapeType shape) {
+        this.shapeType = shape;
+    }
+
     private void setReady(boolean isReady) {
         this.isReady = isReady;
     }
@@ -551,8 +562,8 @@ public class MaterialIntroView extends RelativeLayout {
         this.focusType = focusType;
     }
 
-    private void setCircle(Circle circleShape) {
-        this.circleShape = circleShape;
+    private void setShape(Shape shape) {
+        this.targetShape = shape;
     }
 
     private void setPadding(int padding) {
@@ -654,6 +665,11 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
+        public Builder setShape(ShapeType shape) {
+            materialIntroView.setShapeType(shape);
+            return this;
+        }
+
         public Builder setFocusType(Focus focusType) {
             materialIntroView.setFocusType(focusType);
             return this;
@@ -731,12 +747,23 @@ public class MaterialIntroView extends RelativeLayout {
         }
 
         public MaterialIntroView build() {
-            Circle circle = new Circle(
-                    materialIntroView.targetView,
-                    materialIntroView.focusType,
-                    materialIntroView.focusGravity,
-                    materialIntroView.padding);
-            materialIntroView.setCircle(circle);
+            Shape shape;
+
+            if(materialIntroView.shapeType == ShapeType.CIRCLE) {
+                shape = new Circle(
+                        materialIntroView.targetView,
+                        materialIntroView.focusType,
+                        materialIntroView.focusGravity,
+                        materialIntroView.padding);
+            } else {
+                shape = new Rect(
+                        materialIntroView.targetView,
+                        materialIntroView.focusType,
+                        materialIntroView.focusGravity,
+                        materialIntroView.padding);
+            }
+
+            materialIntroView.setShape(shape);
             return materialIntroView;
         }
 
