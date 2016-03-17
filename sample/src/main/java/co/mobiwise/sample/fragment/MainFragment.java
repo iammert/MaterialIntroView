@@ -12,6 +12,7 @@ import android.widget.Button;
 import co.mobiwise.materialintro.prefs.PreferencesManager;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.shape.ShapeType;
 import co.mobiwise.materialintro.view.MaterialIntroView;
 import co.mobiwise.sample.R;
 
@@ -58,6 +59,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                 .performClick(true)
                 .setInfoText(text)
                 .setTarget(view)
+                .setShape(ShapeType.RECTANGLE)
                 .setUsageId(usageId) //THIS SHOULD BE UNIQUE ID
                 .show();
     }
