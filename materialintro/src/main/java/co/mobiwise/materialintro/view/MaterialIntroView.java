@@ -416,7 +416,7 @@ public class MaterialIntroView extends RelativeLayout {
     /**
      * Dismiss Material Intro View
      */
-    private void dismiss() {
+    public void dismiss() {
         preferencesManager.setDisplayed(materialIntroViewId);
         AnimationFactory.animateFadeOut(this, fadeAnimationDuration, new AnimationListener.OnAnimationEndListener() {
             @Override
