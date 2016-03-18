@@ -24,7 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    //compile 'com.github.iammert:MaterialIntroView:1.4'
+    //compile 'com.github.iammert:MaterialIntroView:1.5.1'
     compile project(':materialintro')
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
