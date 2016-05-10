@@ -31,10 +31,10 @@ import co.mobiwise.sample.fragment.RecyclerviewFragment;
 public class ToolbarMenuItemActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MaterialIntroListener {
 
-    private static final String menuShare = "menuSharedIdTag";
-    private static final String menuAbout = "menuAboutIdTag";
-    private static final String menuSearch = "menuSearchIdTag";
-    private ImageView ivShare,ivAbout;
+    private static final String MENU_SHARED_ID_TAG = "menuSharedIdTag";
+    private static final String MENU_ABOUT_ID_TAG = "menuAboutIdTag";
+    private static final String MENU_SEARCH_ID_TAG = "menuSearchIdTag";
+    private ImageView mIvShare, mIvAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +43,10 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //User toolbar to access the views
         ImageView ivSearch = (ImageView) toolbar.findViewById(R.id.ivToolbarSearch);
-        ivShare = (ImageView) toolbar.findViewById(R.id.ivToolbarShare);
-        ivAbout = (ImageView) toolbar.findViewById(R.id.ivToolbarAbout);
+        mIvShare = (ImageView) toolbar.findViewById(R.id.ivToolbarShare);
+        mIvAbout = (ImageView) toolbar.findViewById(R.id.ivToolbarAbout);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,7 +57,8 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        showIntro(ivSearch, menuSearch, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
+        //show the intro view
+        showIntro(ivSearch, MENU_SEARCH_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.CENTER);
 
     }
 
@@ -92,7 +94,6 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -149,13 +150,13 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
     @Override
     public void onUserClicked(String materialIntroViewId) {
         switch (materialIntroViewId) {
-            case menuSearch:
-                showIntro(ivAbout, menuAbout, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
+            case MENU_SEARCH_ID_TAG:
+                showIntro(mIvAbout, MENU_ABOUT_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
                 break;
-            case menuAbout:
-                showIntro(ivShare, menuShare, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
+            case MENU_ABOUT_ID_TAG:
+                showIntro(mIvShare, MENU_SHARED_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
                 break;
-            case menuShare:
+            case MENU_SHARED_ID_TAG:
                 Toast.makeText(ToolbarMenuItemActivity.this, "Complete!", Toast.LENGTH_SHORT).show();
                 break;
             default:
