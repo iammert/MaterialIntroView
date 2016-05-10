@@ -9,4 +9,5 @@
 
   <dimen name="item_card_width">160dp</dimen>
   <dimen name="item_card_height">220dp</dimen>
+  <dimen name="toolbar_image_dimens">28dp</dimen>
 </resources>
