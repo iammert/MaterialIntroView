@@ -1,5 +1,6 @@
 package co.mobiwise.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -75,27 +76,30 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-
-        if (id == R.id.nav_demo) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
-        } else if (id == R.id.nav_gravity) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new GravityFragment()).commit();
-        } else if (id == R.id.nav_focus) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new FocusFragment()).commit();
-        } else if (id == R.id.nav_recyclerview) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecyclerviewFragment()).commit();
-        } else if (id == R.id.nav_toolbar) {
-
-        } else if (id == R.id.nav_tab) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_demo:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
+                break;
+            case R.id.nav_gravity:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new GravityFragment()).commit();
+                break;
+            case R.id.nav_focus:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new FocusFragment()).commit();
+                break;
+            case R.id.nav_recyclerview:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecyclerviewFragment()).commit();
+                break;
+            case R.id.nav_toolbar:
+                startActivity(new Intent(getApplicationContext(), ToolbarMenuItemActivity.class));
+                break;
+            case R.id.nav_tab:
+                break;
+            default:
+                break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
