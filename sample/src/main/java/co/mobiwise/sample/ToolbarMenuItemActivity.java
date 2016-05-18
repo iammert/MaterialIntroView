@@ -10,28 +10,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
+import co.mobiwise.materialintro.shape.Focus;
+import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroView;
 import co.mobiwise.sample.fragment.FocusFragment;
 import co.mobiwise.sample.fragment.GravityFragment;
 import co.mobiwise.sample.fragment.MainFragment;
 import co.mobiwise.sample.fragment.RecyclerviewFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+/**
+ * This activity demonstrates how to implement Material introView on ToolBar MenuItems
+ *
+ * @author Thomas Kioko
+ */
+public class ToolbarMenuItemActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, MaterialIntroListener {
+
+    private static final String MENU_SHARED_ID_TAG = "menuSharedIdTag";
+    private static final String MENU_ABOUT_ID_TAG = "menuAboutIdTag";
+    private static final String MENU_SEARCH_ID_TAG = "menuSearchIdTag";
+    private ImageView mIvShare, mIvAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_toolbar);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null)
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container, new MainFragment())
-                    .commit();
-
+        //User toolbar to access the views
+        ImageView ivSearch = (ImageView) toolbar.findViewById(R.id.ivToolbarSearch);
+        mIvShare = (ImageView) toolbar.findViewById(R.id.ivToolbarShare);
+        mIvAbout = (ImageView) toolbar.findViewById(R.id.ivToolbarAbout);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,6 +56,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //show the intro view
+        showIntro(ivSearch, MENU_SEARCH_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.CENTER);
 
     }
 
@@ -100,8 +118,49 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Method that handles display of intro screens
+     *
+     * @param view         View to show guide
+     * @param id           Unique ID
+     * @param text         Display message
+     * @param focusGravity Focus Gravity of the display
+     */
+    public void showIntro(View view, String id, String text, FocusGravity focusGravity) {
+        new MaterialIntroView.Builder(ToolbarMenuItemActivity.this)
+                .enableDotAnimation(true)
+                .setFocusGravity(focusGravity)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(100)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(text)
+                .setTarget(view)
+                .setListener(this)
+                .setUsageId(id)
+                .show();
+    }
+
+    @Override
+    public void onUserClicked(String materialIntroViewId) {
+        switch (materialIntroViewId) {
+            case MENU_SEARCH_ID_TAG:
+                showIntro(mIvAbout, MENU_ABOUT_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
+                break;
+            case MENU_ABOUT_ID_TAG:
+                showIntro(mIvShare, MENU_SHARED_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
+                break;
+            case MENU_SHARED_ID_TAG:
+                Toast.makeText(ToolbarMenuItemActivity.this, "Complete!", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 }

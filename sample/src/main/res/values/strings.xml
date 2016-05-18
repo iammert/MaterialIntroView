@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="image_view_description">ImageView</string>
+
+    <!-- TourGuide Text -->
+    <string name="guide_setup_profile">Welcome. Let\'s setup your profile. Just tap on the circle.</string>
 </resources>
