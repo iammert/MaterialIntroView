@@ -130,6 +130,10 @@ config.setFadeAnimationEnabled(true);
 [Murat Can BUR](https://github.com/muratcanbur)
 
 
+#Docs
+[Chinese Doc](http://www.jianshu.com/p/1d2dcbc1e0f2)
+
+
 License
 --------
 
