@@ -266,7 +266,8 @@ public class MaterialIntroView extends RelativeLayout {
 
         infoView = layoutInfo.findViewById(R.id.info_layout);
         cardViewDialog = (CardView) layoutInfo.findViewById(R.id.card_view);
-        cardViewDialog.setBackgroundColor(colorBackgroundDialog);
+        cardViewDialog.setCardBackgroundColor(colorBackgroundDialog);
+//        cardViewDialog.setBackgroundColor(colorBackgroundDialog);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
         imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
@@ -568,7 +569,8 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void setDialogBackgroundColor(int colorBackgroundDialog) {
         this.colorBackgroundDialog = colorBackgroundDialog;
-        cardViewDialog.setBackgroundColor(this.colorBackgroundDialog);
+        cardViewDialog.setCardBackgroundColor(this.colorBackgroundDialog);
+//        cardViewDialog.setBackgroundColor(this.colorBackgroundDialog);
     }
 
     private void setTextViewInfo(String textViewInfo) {
