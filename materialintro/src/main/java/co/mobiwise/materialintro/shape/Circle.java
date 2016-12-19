@@ -4,62 +4,31 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-import co.mobiwise.materialintro.utils.Constants;
 import co.mobiwise.materialintro.target.Target;
 
 /**
  * Created by mertsimsek on 25/01/16.
  */
-public class Circle {
-
-    private Target target;
-
-    private Focus focus;
-
-    private FocusGravity focusGravity;
+public class Circle extends Shape {
 
     private int radius;
 
     private Point circlePoint;
 
-    private int padding;
-
-    public Circle(Target target) {
-        this(target, Focus.MINIMUM);
-    }
-
-    public Circle(Target target,Focus focus) {
-        this(target, focus, FocusGravity.CENTER, Constants.DEFAULT_TARGET_PADDING);
-    }
-
     public Circle(Target target, Focus focus, FocusGravity focusGravity, int padding) {
-        this.target = target;
-        this.focus = focus;
-        this.focusGravity = focusGravity;
-        this.padding = padding;
+        super(target, focus, focusGravity, padding);
         circlePoint = getFocusPoint();
         calculateRadius(padding);
     }
 
+    @Override
     public void draw(Canvas canvas, Paint eraser, int padding){
         calculateRadius(padding);
         circlePoint = getFocusPoint();
         canvas.drawCircle(circlePoint.x, circlePoint.y, radius, eraser);
     }
 
-    private Point getFocusPoint(){
-        if(focusGravity == FocusGravity.LEFT){
-            int xLeft = target.getRect().left + (target.getPoint().x - target.getRect().left) / 2;
-            return new Point(xLeft, target.getPoint().y);
-        }
-        else if(focusGravity == FocusGravity.RIGHT){
-            int xRight = target.getPoint().x + (target.getRect().right - target.getPoint().x) / 2;
-            return new Point(xRight, target.getPoint().y);
-        }
-        else
-            return target.getPoint();
-    }
-
+    @Override
     public void reCalculateAll(){
         calculateRadius(padding);
         circlePoint = getFocusPoint();
@@ -81,12 +50,28 @@ public class Circle {
         radius = side + padding;
     }
 
-    public int getRadius(){
+    private int getRadius(){
         return radius;
     }
 
+    @Override
     public Point getPoint(){
         return circlePoint;
+    }
+
+    @Override
+    public int getHeight() {
+        return 2 * getRadius();
+    }
+
+    @Override
+    public boolean isTouchOnFocus(double x, double y) {
+        int xV = getPoint().x;
+        int yV = getPoint().y;
+
+        double dx = Math.pow(x - xV, 2);
+        double dy = Math.pow(y - yV, 2);
+        return (dx + dy) <= Math.pow(radius, 2);
     }
 
 }

@@ -17,6 +17,7 @@ new MaterialIntroView.Builder(this)
                 .enableFadeAnimation(true)
                 .performClick(true)
                 .setInfoText("Hi There! Click this card and see what happens.")
+                .setShapeType(ShapeType.CIRCLE)
                 .setTarget(view)
                 .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
                 .show();
@@ -79,6 +80,18 @@ dependencies {
 .setInfoTextSize(30) //Change text size
 ```
 ```java
+.setShapeType(ShapeType.CIRCLE) //Change shape of focus area
+.setShapeType(ShapeType.RECTANGLE) //Change shape of focus area
+```
+```java
+.setCustomShape(Shape shape) //Use custom shape
+```
+```java
+// Allow this showcase overlay to only show up once. Prevents multiple screens from showing at the same time.
+// Useful if you wish to show a tour step in a code that gets called multiple times
+.setIdempotent(true)
+```
+```java
 .setUsageId("intro_fab_button") //Store intro view status whether it is learnt or not
 ```
 ```java
@@ -112,12 +125,25 @@ config.setFadeAnimationEnabled(true);
 .setConfiguration(config) //
 ```
 
+# Use Custom Shapes
+You can use your own highlight shapes if Circle and Rectangle do not work for you. See source for `Circle` and `Rect` for implementation example.
+```java
+public class MyShape extends Shape {
+    // ... your implementation
+}
+
+//... in your app code
+
+.setCustomShape(MyShape shape)
+
+```
+
 # Demos
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_drawer.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_all.png"/>
-
-<img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_focus_normal.png"/> <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/art_gravity_left.png"/>
-
+![Alt text](/art/art_drawer.png?raw=true)
+![Alt text](/art/art_focus_all.png?raw=true)
+![Alt text](/art/art_focus_normal.png?raw=true)
+![Alt text](/art/art_gravity_left.png?raw=true)
+![Alt text](/art/art_rectangle.png?raw=true)
 # TODO
 
 * [ ] Sample app will be more detailed about using library.
