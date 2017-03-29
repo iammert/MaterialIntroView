@@ -422,7 +422,7 @@ public class MaterialIntroView extends RelativeLayout {
             }
         }, delayMillis);
 
-        if(isIdempotent) {
+        if(!isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
         }
     }
