@@ -582,7 +582,7 @@ public class MaterialIntroView extends RelativeLayout {
         textViewInfo.setTextColor(this.colorTextViewInfo);
     }
 
-    private void setTextViewInfo(String textViewInfo) {
+    private void setTextViewInfo(CharSequence textViewInfo) {
         this.textViewInfo.setText(textViewInfo);
     }
 
@@ -694,7 +694,7 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
-        public Builder setInfoText(String infoText) {
+        public Builder setInfoText(CharSequence infoText) {
             materialIntroView.enableInfoDialog(true);
             materialIntroView.setTextViewInfo(infoText);
             return this;
