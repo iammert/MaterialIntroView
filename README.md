@@ -3,10 +3,10 @@ Material Intro View is a showcase android library.
 
 We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and we love it. Then decided to create showcase just like it.
 
-#Screen
+# Screen
 <img src="https://raw.githubusercontent.com/iammert/MaterialIntroView/master/art/materialintroviewgif.gif"/>
 
-#Usage
+# Usage
 ```java
 new MaterialIntroView.Builder(this)
                 .enableDotAnimation(true)
@@ -149,14 +149,14 @@ public class MyShape extends Shape {
 * [ ] Sample app will be more detailed about using library.
 * [ ] Sequence for MaterialIntroViews
 
-#Authors
+# Authors
 
 [Mert SIMSEK](https://github.com/iammert)
 
 [Murat Can BUR](https://github.com/muratcanbur)
 
 
-#Docs
+# Docs
 [Chinese Doc](http://www.jianshu.com/p/1d2dcbc1e0f2)
 
 
