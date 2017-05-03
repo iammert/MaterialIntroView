@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -368,6 +369,8 @@ public class MaterialIntroView extends RelativeLayout {
                 if (isTouchOnFocus && isPerformClick) {
                     targetView.getView().setPressed(true);
                     targetView.getView().invalidate();
+
+                    gestureDetector.onTouchEvent(event);
                 }
 
                 return true;
@@ -377,11 +380,21 @@ public class MaterialIntroView extends RelativeLayout {
                     dismiss();
 
                 if (isTouchOnFocus && isPerformClick) {
-                    targetView.getView().performClick();
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                    targetView.getView().setPressed(false);
-                    targetView.getView().invalidate();
+                    if(longClick) {
+                        targetView.getView().performLongClick();
+                        targetView.getView().setPressed(true);
+                        targetView.getView().invalidate();
+                        targetView.getView().setPressed(false);
+                        targetView.getView().invalidate();
+
+                        longClick = false;
+                    } else {
+                        targetView.getView().performClick();
+                        targetView.getView().setPressed(true);
+                        targetView.getView().invalidate();
+                        targetView.getView().setPressed(false);
+                        targetView.getView().invalidate();
+                    }
                 }
 
                 return true;
@@ -391,6 +404,16 @@ public class MaterialIntroView extends RelativeLayout {
 
         return super.onTouchEvent(event);
     }
+
+    boolean longClick = false;
+    final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public void onLongPress(MotionEvent e) {
+            Log.d("matitvie", "Longpress detected");
+            longClick = true;
+        }
+    });
+
 
     /**
      * Shows material view with fade in
