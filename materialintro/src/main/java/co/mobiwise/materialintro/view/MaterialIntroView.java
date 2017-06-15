@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -130,6 +131,7 @@ public class MaterialIntroView extends RelativeLayout {
      * Dismiss on touch any position
      */
     private boolean dismissOnTouch;
+    private boolean dismissOnBackPress;
 
     /**
      * Info dialog view
@@ -259,6 +261,7 @@ public class MaterialIntroView extends RelativeLayout {
         isReady = false;
         isFadeAnimationEnabled = true;
         dismissOnTouch = false;
+        dismissOnBackPress = false;
         isLayoutCompleted = false;
         isInfoEnabled = false;
         isDotViewEnabled = false;
@@ -419,6 +422,9 @@ public class MaterialIntroView extends RelativeLayout {
                     });
                 else
                     setVisibility(VISIBLE);
+                if (dismissOnBackPress) {
+                    requestFocus();
+                }
             }
         }, delayMillis);
 
@@ -573,6 +579,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.dismissOnTouch = dismissOnTouch;
     }
 
+    private void setDismissOnBackPress(boolean dismissOnBackPress) {
+        this.dismissOnBackPress = dismissOnBackPress;
+    }
+
     private void setFocusGravity(FocusGravity focusGravity) {
         this.focusGravity = focusGravity;
     }
@@ -606,6 +616,11 @@ public class MaterialIntroView extends RelativeLayout {
         this.isDotViewEnabled = isDotViewEnabled;
     }
 
+    private void enableDismissOnBackPress() {
+        setFocusableInTouchMode(true);
+        setFocusable(true);
+    }
+
     public void setConfiguration(MaterialIntroConfiguration configuration) {
 
         if (configuration != null) {
@@ -615,6 +630,7 @@ public class MaterialIntroView extends RelativeLayout {
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.isDotViewEnabled = configuration.isDotViewEnabled();
             this.dismissOnTouch = configuration.isDismissOnTouch();
+            this.dismissOnBackPress = configuration.isDismissOnBackPress();
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.focusType = configuration.getFocusType();
             this.focusGravity = configuration.getFocusGravity();
@@ -710,6 +726,11 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
+        public Builder dismissOnBackPress(boolean dismissOnBackPress) {
+            materialIntroView.setDismissOnBackPress(dismissOnBackPress);
+            return this;
+        }
+
         public Builder setUsageId(String materialIntroViewId) {
             materialIntroView.setUsageId(materialIntroViewId);
             return this;
@@ -774,6 +795,10 @@ public class MaterialIntroView extends RelativeLayout {
             }
 
             materialIntroView.setShape(shape);
+
+            if (materialIntroView.dismissOnBackPress) {
+                materialIntroView.enableDismissOnBackPress();
+            }
             return materialIntroView;
         }
 
@@ -782,6 +807,17 @@ public class MaterialIntroView extends RelativeLayout {
             return materialIntroView;
         }
 
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (dismissOnBackPress && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                dismiss();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
 }

@@ -21,6 +21,8 @@ public class MaterialIntroConfiguration {
 
     private boolean dismissOnTouch;
 
+    private boolean dismissOnBackPress;
+
     private int colorTextViewInfo;
 
     private boolean isDotViewEnabled;
@@ -94,6 +96,14 @@ public class MaterialIntroConfiguration {
 
     public void setDismissOnTouch(boolean dismissOnTouch) {
         this.dismissOnTouch = dismissOnTouch;
+    }
+
+    public boolean isDismissOnBackPress() {
+        return dismissOnBackPress;
+    }
+
+    public void setDismissOnBackPress(boolean dismissOnBackPress) {
+        this.dismissOnBackPress = dismissOnBackPress;
     }
 
     public int getColorTextViewInfo() {
