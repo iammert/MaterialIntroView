@@ -9,7 +9,6 @@ We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and w
 # Usage
 ```java
 new MaterialIntroView.Builder(this)
-                .enableDotAnimation(true)
 				.enableIcon(false)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
@@ -49,6 +48,7 @@ dependencies {
 ```
 ```java
 .enableFadeAnimation(true) //View will appear/disappear with fade in/out animation
+```
 ```java
 .setFadeAnimation(200) //If enableFadeAnimation(true) is called view will fade in/out with 200 ms duration
 ```
