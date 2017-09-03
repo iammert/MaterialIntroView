@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import co.mobiwise.sample.fragment.FocusFragment;
+import co.mobiwise.sample.fragment.GestureFragment;
 import co.mobiwise.sample.fragment.GravityFragment;
 import co.mobiwise.sample.fragment.MainFragment;
 import co.mobiwise.sample.fragment.RecyclerviewFragment;
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), ToolbarMenuItemActivity.class));
                 break;
             case R.id.nav_tab:
+                break;
+            case R.id.nav_gesture:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new GestureFragment()).commit();
                 break;
             default:
                 break;

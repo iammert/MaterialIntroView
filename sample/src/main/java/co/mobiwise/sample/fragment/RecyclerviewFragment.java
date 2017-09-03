@@ -49,7 +49,6 @@ public class RecyclerviewFragment extends Fragment implements MaterialIntroListe
 
     private void showMaterialIntro() {
         new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(true)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(200)

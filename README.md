@@ -49,6 +49,8 @@ dependencies {
 ```
 ```java
 .enableFadeAnimation(true) //View will appear/disappear with fade in/out animation
+```java
+.setFadeAnimation(200) //If enableFadeAnimation(true) is called view will fade in/out with 200 ms duration
 ```
 ```java
 //ie. If your button's width has MATCH_PARENT.
@@ -63,6 +65,8 @@ dependencies {
 .setFocusGravity(FocusGravity.LEFT)
 .setFocusType(FocusGravity.CENTER)
 .setFocusType(FocusGravity.RIGHT)
+.setFocusType(FocusGravity.TOP)
+.setFocusType(FocusGravity.BOTTOM)
 ```
 ```java
 .setTarget(myButton) //Focus on myButton
@@ -95,7 +99,17 @@ dependencies {
 .setUsageId("intro_fab_button") //Store intro view status whether it is learnt or not
 ```
 ```java
-.enableDotAnimation(true) //Shows dot animation center of focus area
+// Draws a gesture drawable at the center of focus area. The default drawable is a pulsating dot. It can be
+// overriden with `setGestureDrawableResId()``.
+.enableGestureDrawable(true)
+```
+```java
+// Shows a custom drawable at the center of focus area. E.g. it could visually represent a specific gesture.
+.setGestureDrawableResId(R.drawable.ic_cursor_hand)
+```
+```java
+// Shows a custom animator for the gesture drawable if enabled.
+.setGestureAnimatorResId(R.animator.ic_drag_from_right)
 ```
 ```java
 .enableIcon(false) //Turn off helper icon, default is true
@@ -136,6 +150,9 @@ public class MyShape extends Shape {
 
 .setCustomShape(MyShape shape)
 
+// or you can use the built-in `CircleOnEdge` shape whose focus center snaps to an edge depending on the supplied `FocusGravity`:
+
+.setCustomShape(new CircleOnEdge(new ViewTarget(view), FocusGravity.RIGHT, 0))
 ```
 
 # Demos

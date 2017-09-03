@@ -34,7 +34,7 @@ public class Circle extends Shape {
         circlePoint = getFocusPoint();
     }
 
-    private void calculateRadius(int padding){
+    protected void calculateRadius(int padding){
         int side;
 
         if(focus == Focus.MINIMUM)
@@ -50,7 +50,11 @@ public class Circle extends Shape {
         radius = side + padding;
     }
 
-    private int getRadius(){
+    protected void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    protected int getRadius(){
         return radius;
     }
 

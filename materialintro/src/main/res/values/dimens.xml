@@ -2,4 +2,5 @@
 <resources>
     <dimen name="cardview_margin">24dp</dimen>
     <dimen name="info_text_size">16sp</dimen>
+    <dimen name="gesture_circle_radius">96dp</dimen>
 </resources>

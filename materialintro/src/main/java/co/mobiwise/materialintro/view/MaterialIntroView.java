@@ -1,5 +1,7 @@
 package co.mobiwise.materialintro.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +13,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.AnimatorRes;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -153,16 +157,18 @@ public class MaterialIntroView extends RelativeLayout {
     private boolean isInfoEnabled;
 
     /**
-     * Dot view will appear center of
+     * Gesture view will appear center of
      * cleared target area
      */
-    private View dotView;
+    private ImageView gestureView;
 
-    /**
-     * Dot View will be shown if
-     * this is true
-     */
-    private boolean isDotViewEnabled;
+    private boolean gestureDrawableEnabled;
+
+    private @DrawableRes int gestureDrawableResId;
+
+    private @AnimatorRes int gestureAnimatorResId;
+
+    private Animator gestureAnimator;
 
     /**
      * Info Dialog Icon
@@ -261,10 +267,12 @@ public class MaterialIntroView extends RelativeLayout {
         dismissOnTouch = false;
         isLayoutCompleted = false;
         isInfoEnabled = false;
-        isDotViewEnabled = false;
         isPerformClick = false;
         isImageViewEnabled = true;
         isIdempotent = false;
+        gestureDrawableEnabled = true;
+        gestureDrawableResId = R.drawable.icon_dotview;
+        gestureAnimatorResId = R.animator.pulsate;
 
         /**
          * initialize objects
@@ -285,8 +293,8 @@ public class MaterialIntroView extends RelativeLayout {
         textViewInfo.setTextColor(colorTextViewInfo);
         imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
 
-        dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
-        dotView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        gestureView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.gestureview, null);
+        gestureView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -295,8 +303,8 @@ public class MaterialIntroView extends RelativeLayout {
                 if (targetShape != null && targetShape.getPoint().y != 0 && !isLayoutCompleted) {
                     if (isInfoEnabled)
                         setInfoLayout();
-                    if(isDotViewEnabled)
-                        setDotViewLayout();
+                    if(gestureDrawableEnabled && gestureDrawableResId != 0)
+                        setGestureViewLayout();
                     removeOnGlobalLayoutListener(MaterialIntroView.this, this);
                 }
             }
@@ -502,29 +510,39 @@ public class MaterialIntroView extends RelativeLayout {
         });
     }
 
-    private void setDotViewLayout() {
+    private void setGestureViewLayout() {
 
         handler.post(new Runnable() {
             @Override
             public void run() {
 
-                if (dotView.getParent() != null)
-                    ((ViewGroup) dotView.getParent()).removeView(dotView);
+                if (gestureView.getParent() != null)
+                    ((ViewGroup) gestureView.getParent()).removeView(gestureView);
 
-                RelativeLayout.LayoutParams dotViewLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                dotViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
-                dotViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
-                dotViewLayoutParams.setMargins(
-                        targetShape.getPoint().x - (dotViewLayoutParams.width / 2),
-                        targetShape.getPoint().y - (dotViewLayoutParams.height / 2),
+                RelativeLayout.LayoutParams gestureViewLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                gestureViewLayoutParams.height = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
+                gestureViewLayoutParams.width = Utils.dpToPx(Constants.DEFAULT_DOT_SIZE);
+                gestureViewLayoutParams.setMargins(
+                        targetShape.getPoint().x - (gestureViewLayoutParams.width / 2),
+                        targetShape.getPoint().y - (gestureViewLayoutParams.height / 2),
                         0,
                         0);
-                dotView.setLayoutParams(dotViewLayoutParams);
-                dotView.postInvalidate();
-                addView(dotView);
+                gestureView.setLayoutParams(gestureViewLayoutParams);
+                gestureView.postInvalidate();
+                addView(gestureView);
+                gestureView.setVisibility(VISIBLE);
 
-                dotView.setVisibility(VISIBLE);
-                AnimationFactory.performAnimation(dotView);
+                if (gestureDrawableResId != 0) {
+                    gestureView.setImageResource(gestureDrawableResId);
+                }
+
+                if (gestureAnimatorResId != 0) {
+                    if (gestureAnimator == null) {
+                        gestureAnimator = AnimatorInflater.loadAnimator(getContext(), gestureAnimatorResId);
+                    }
+                    gestureAnimator.setTarget(gestureView);
+                    gestureAnimator.start();
+                }
             }
         });
     }
@@ -543,6 +561,10 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void enableFadeAnimation(boolean isFadeAnimationEnabled) {
         this.isFadeAnimationEnabled = isFadeAnimationEnabled;
+    }
+
+    private void setFadeAnimationDuration(long fadeAnimationDuration) {
+        this.fadeAnimationDuration = fadeAnimationDuration;
     }
 
     private void setShapeType(ShapeType shape) {
@@ -602,8 +624,28 @@ public class MaterialIntroView extends RelativeLayout {
         this.isIdempotent = idempotent;
     }
 
-    private void enableDotView(boolean isDotViewEnabled){
-        this.isDotViewEnabled = isDotViewEnabled;
+    public boolean isGestureDrawableEnabled() {
+        return gestureDrawableEnabled;
+    }
+
+    public void enableGestureDrawable(boolean enabled) {
+        this.gestureDrawableEnabled = enabled;
+    }
+
+    public int getGestureDrawableResId() {
+        return gestureDrawableResId;
+    }
+
+    public void setGestureDrawableResId(int gestureDrawableResId) {
+        this.gestureDrawableResId = gestureDrawableResId;
+    }
+
+    public int getGestureAnimatorResId() {
+        return gestureAnimatorResId;
+    }
+
+    public void setGestureAnimatorResId(int gestureAnimatorResId) {
+        this.gestureAnimatorResId = gestureAnimatorResId;
     }
 
     public void setConfiguration(MaterialIntroConfiguration configuration) {
@@ -613,7 +655,8 @@ public class MaterialIntroView extends RelativeLayout {
             this.delayMillis = configuration.getDelayMillis();
             this.isFadeAnimationEnabled = configuration.isFadeAnimationEnabled();
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
-            this.isDotViewEnabled = configuration.isDotViewEnabled();
+            this.gestureDrawableResId = configuration.getGestureDrawableResId();
+            this.gestureAnimatorResId = configuration.getGestureAnimatorResId();
             this.dismissOnTouch = configuration.isDismissOnTouch();
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.focusType = configuration.getFocusType();
@@ -661,6 +704,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableFadeAnimation(boolean isFadeAnimationEnabled) {
             materialIntroView.enableFadeAnimation(isFadeAnimationEnabled);
+            return this;
+        }
+
+        public Builder setFadeAnimationDuration(long fadeAnimationDuration) {
+            materialIntroView.setFadeAnimationDuration(fadeAnimationDuration);
             return this;
         }
 
@@ -715,8 +763,18 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
-        public Builder enableDotAnimation(boolean isDotAnimationEnabled) {
-            materialIntroView.enableDotView(isDotAnimationEnabled);
+        public Builder enableGestureDrawable(boolean enabled) {
+            materialIntroView.enableGestureDrawable(enabled);
+            return this;
+        }
+
+        public Builder setGestureDrawableResId(@DrawableRes int gestureDrawableResId) {
+            materialIntroView.setGestureDrawableResId(gestureDrawableResId);
+            return this;
+        }
+
+        public Builder setGestureAnimatorResId(@AnimatorRes int gestureAnimatorResId) {
+            materialIntroView.setGestureAnimatorResId(gestureAnimatorResId);
             return this;
         }
 
