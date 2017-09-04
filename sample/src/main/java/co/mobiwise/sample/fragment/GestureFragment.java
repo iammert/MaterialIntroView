@@ -68,6 +68,7 @@ public class GestureFragment extends Fragment implements MaterialIntroListener{
                 .setGestureAnimatorResId(animatorResId)
                 .setCustomShape(new CircleOnEdge(new ViewTarget(view), focusGravity, 0))
                 .setDelayMillis(200)
+                .setIconDrawableResId(android.R.drawable.ic_dialog_info)
                 .enableFadeAnimation(true)
                 .setFadeAnimationDuration(200)
                 .performClick(true)

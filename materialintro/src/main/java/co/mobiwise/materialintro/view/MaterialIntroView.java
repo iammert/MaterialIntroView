@@ -505,9 +505,8 @@ public class MaterialIntroView extends RelativeLayout {
 
                 addView(infoView);
 
-                if (!isImageViewEnabled){
-                    imageViewIcon.setVisibility(GONE);
-                }
+                imageViewIcon.setVisibility(isImageViewEnabled ? VISIBLE : GONE);
+                imageViewIcon.setImageResource(iconDrawableResId);
 
                 infoView.setVisibility(VISIBLE);
             }
@@ -622,6 +621,14 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void enableImageViewIcon(boolean isImageViewEnabled){
         this.isImageViewEnabled = isImageViewEnabled;
+    }
+
+    public int getIconDrawableResId() {
+        return iconDrawableResId;
+    }
+
+    public void setIconDrawableResId(int iconDrawableResId) {
+        this.iconDrawableResId = iconDrawableResId;
     }
 
     private void setIdempotent(boolean idempotent){
@@ -790,7 +797,7 @@ public class MaterialIntroView extends RelativeLayout {
         }
 
         public Builder setIconDrawableResId(@DrawableRes int drawableResId) {
-            materialIntroView.iconDrawableResId = drawableResId;
+            materialIntroView.setIconDrawableResId(drawableResId);
             return this;
         }
 
