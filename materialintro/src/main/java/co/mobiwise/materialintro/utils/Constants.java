@@ -1,5 +1,7 @@
 package co.mobiwise.materialintro.utils;
 
+import co.mobiwise.materialintro.R;
+
 /**
  * Created by mertsimsek on 24/01/16.
  */
@@ -17,4 +19,5 @@ public class Constants {
 
     public static int DEFAULT_DOT_SIZE = 55;
 
+    public static final int DEFAULT_ICON_DRAWABLE = R.drawable.icon_question;
 }

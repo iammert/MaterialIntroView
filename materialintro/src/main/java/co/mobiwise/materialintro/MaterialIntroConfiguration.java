@@ -44,7 +44,7 @@ public class MaterialIntroConfiguration {
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
         isImageViewEnabled = true;
-        iconDrawableResId = R.drawable.icon_question;
+        iconDrawableResId = Constants.DEFAULT_ICON_DRAWABLE;
     }
 
     public int getMaskColor() {

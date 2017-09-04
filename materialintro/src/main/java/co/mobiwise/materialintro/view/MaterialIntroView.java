@@ -275,7 +275,7 @@ public class MaterialIntroView extends RelativeLayout {
         gestureDrawableEnabled = true;
         gestureDrawableResId = R.drawable.icon_dotview;
         gestureAnimatorResId = R.animator.pulsate;
-        iconDrawableResId = R.drawable.icon_question;
+        iconDrawableResId = Constants.DEFAULT_ICON_DRAWABLE;
 
         /**
          * initialize objects
@@ -296,6 +296,12 @@ public class MaterialIntroView extends RelativeLayout {
         textViewInfo.setTextColor(colorTextViewInfo);
         imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
         imageViewIcon.setImageResource(iconDrawableResId);
+        if (iconDrawableResId != Constants.DEFAULT_ICON_DRAWABLE) {
+            LayoutParams lp = (LayoutParams) imageViewIcon.getLayoutParams();
+            lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            imageViewIcon.setLayoutParams(lp);
+        }
 
         gestureView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.gestureview, null);
         gestureView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
