@@ -175,6 +175,8 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private ImageView imageViewIcon;
 
+    private int iconDrawableResId;
+
     /**
      * Image View will be shown if
      * this is true
@@ -273,6 +275,7 @@ public class MaterialIntroView extends RelativeLayout {
         gestureDrawableEnabled = true;
         gestureDrawableResId = R.drawable.icon_dotview;
         gestureAnimatorResId = R.animator.pulsate;
+        iconDrawableResId = R.drawable.icon_question;
 
         /**
          * initialize objects
@@ -292,6 +295,7 @@ public class MaterialIntroView extends RelativeLayout {
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
         imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
+        imageViewIcon.setImageResource(iconDrawableResId);
 
         gestureView = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.gestureview, null);
         gestureView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -661,6 +665,8 @@ public class MaterialIntroView extends RelativeLayout {
             this.colorTextViewInfo = configuration.getColorTextViewInfo();
             this.focusType = configuration.getFocusType();
             this.focusGravity = configuration.getFocusGravity();
+            this.isImageViewEnabled = configuration.isImageViewEnabled();
+            this.iconDrawableResId = configuration.getIconDrawableResId();
         }
     }
 
@@ -780,6 +786,11 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableIcon(boolean isImageViewIconEnabled) {
             materialIntroView.enableImageViewIcon(isImageViewIconEnabled);
+            return this;
+        }
+
+        public Builder setIconDrawableResId(@DrawableRes int drawableResId) {
+            materialIntroView.iconDrawableResId = drawableResId;
             return this;
         }
 

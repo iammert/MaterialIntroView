@@ -32,6 +32,8 @@ public class MaterialIntroConfiguration {
 
     private boolean isImageViewEnabled;
 
+    private @DrawableRes int iconDrawableResId;
+
     public MaterialIntroConfiguration() {
         maskColor = Constants.DEFAULT_MASK_COLOR;
         delayMillis = Constants.DEFAULT_DELAY_MILLIS;
@@ -42,6 +44,7 @@ public class MaterialIntroConfiguration {
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
         isImageViewEnabled = true;
+        iconDrawableResId = R.drawable.icon_question;
     }
 
     public int getMaskColor() {
@@ -110,6 +113,14 @@ public class MaterialIntroConfiguration {
 
     public boolean isImageViewEnabled(){
         return isImageViewEnabled;
+    }
+
+    public void setIconDrawableResId(int iconDrawableResId) {
+        this.iconDrawableResId = iconDrawableResId;
+    }
+
+    public int getIconDrawableResId() {
+        return this.iconDrawableResId;
     }
 
     public int getGestureDrawableResId() {
