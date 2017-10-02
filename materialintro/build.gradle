@@ -1,4 +1,26 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        aarDebug(MavenPublication) {
+            groupId "com.github.sevar83"
+            artifactId "MaterialIntroView"
+            version "1.6.0"
+            artifact("$buildDir/outputs/aar/materialintro-debug.aar")
+            // Add javadocs and sources artifact
+            // Add/Exclude project dependencies via pom.withXml
+        }
+        aarRelease(MavenPublication) {
+            groupId "com.github.sevar83"
+            artifactId "MaterialIntroView"
+            version "1.6.0"
+            artifact("$buildDir/outputs/aar/materialintro-release.aar")
+            // Add javadocs and sources artifact
+            // Add/Exclude project dependencies via pom.withXml
+        }
+    }
+}
 
 android {
     compileSdkVersion 26
