@@ -5,12 +5,8 @@ import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.Path;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.AnimatorRes;
@@ -100,24 +96,13 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private Target targetView;
 
-    /**
-     * Eraser
-     */
-    private Paint eraser;
+    private Path targetShapePath;
 
     /**
      * Handler will be used to
      * delay MaterialIntroView
      */
     private Handler handler;
-
-    /**
-     * All views will be drawn to
-     * this bitmap and canvas then
-     * bitmap will be drawn to canvas
-     */
-    private Bitmap bitmap;
-    private Canvas canvas;
 
     /**
      * Circle padding
@@ -284,11 +269,6 @@ public class MaterialIntroView extends RelativeLayout {
 
         preferencesManager = new PreferencesManager(context);
 
-        eraser = new Paint();
-        eraser.setColor(0xFFFFFFFF);
-        eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
-
         View layoutInfo = LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
 
         infoView = layoutInfo.findViewById(R.id.info_layout);
@@ -339,25 +319,18 @@ public class MaterialIntroView extends RelativeLayout {
 
         if (!isReady) return;
 
-        if (bitmap == null || canvas == null) {
-            if (bitmap != null) bitmap.recycle();
+        canvas.save();
 
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            this.canvas = new Canvas(bitmap);
+        if (targetShapePath == null) {
+            targetShapePath = new Path();
+            targetShapePath.addPath(targetShape.getPath(this.padding));
+            targetShapePath.setFillType(Path.FillType.INVERSE_EVEN_ODD);
         }
+        // TODO add antialiasing somehow, clipPath() does not support it
+        canvas.clipPath(targetShapePath);
+        canvas.drawColor(maskColor);
 
-        /**
-         * Draw mask
-         */
-        this.canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        this.canvas.drawColor(maskColor);
-
-        /**
-         * Clear focus area
-         */
-        targetShape.draw(this.canvas, eraser, padding);
-
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        canvas.restore();
     }
 
     /**
@@ -612,6 +585,7 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void setPadding(int padding) {
         this.padding = padding;
+        this.targetShapePath = null;
     }
 
     private void setDismissOnTouch(boolean dismissOnTouch) {

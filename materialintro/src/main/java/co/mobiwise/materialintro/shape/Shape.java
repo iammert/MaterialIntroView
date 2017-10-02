@@ -1,7 +1,6 @@
 package co.mobiwise.materialintro.shape;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 
 import co.mobiwise.materialintro.target.Target;
@@ -20,6 +19,8 @@ public abstract class Shape {
 
     protected int padding;
 
+    protected Path cachedPath;
+
     public Shape(Target target) {
         this(target, Focus.MINIMUM);
     }
@@ -35,7 +36,7 @@ public abstract class Shape {
         this.padding = padding;
     }
 
-    public abstract void draw(Canvas canvas, Paint eraser, int padding);
+    public abstract Path getPath(int padding);
 
     protected Point getFocusPoint(){
         if(focusGravity == FocusGravity.LEFT){

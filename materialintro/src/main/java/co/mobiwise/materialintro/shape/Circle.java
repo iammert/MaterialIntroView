@@ -1,7 +1,6 @@
 package co.mobiwise.materialintro.shape;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 
 import co.mobiwise.materialintro.target.Target;
@@ -22,10 +21,15 @@ public class Circle extends Shape {
     }
 
     @Override
-    public void draw(Canvas canvas, Paint eraser, int padding){
-        calculateRadius(padding);
-        circlePoint = getFocusPoint();
-        canvas.drawCircle(circlePoint.x, circlePoint.y, radius, eraser);
+    public Path getPath(int padding) {
+        if (this.padding != padding || cachedPath == null) {
+            this.padding = padding;
+            Point center = getFocusPoint();
+            cachedPath = new Path();
+            cachedPath.addCircle((float) center.x, (float) center.y, getRadius() + padding, Path.Direction.CW);
+        }
+
+        return cachedPath;
     }
 
     @Override
