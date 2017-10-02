@@ -373,32 +373,45 @@ public class MaterialIntroView extends RelativeLayout {
         float yT = event.getY();
 
         boolean isTouchOnFocus = targetShape.isTouchOnFocus(xT, yT);
+        // TODO extract the flag into MaterialIntroView method ?
+        boolean passEventsThroughFocusShape = gestureDrawableResId != Constants.DEFAULT_GESTURE_DRAWABLE;
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-
-                if (isTouchOnFocus && isPerformClick) {
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                }
-
+        if (passEventsThroughFocusShape) {
+            if (!isTouchOnFocus)
                 return true;
-            case MotionEvent.ACTION_UP:
 
-                if (isTouchOnFocus || dismissOnTouch)
-                    dismiss();
+        } else {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
 
-                if (isTouchOnFocus && isPerformClick) {
-                    targetView.getView().performClick();
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                    targetView.getView().setPressed(false);
-                    targetView.getView().invalidate();
-                }
+                    if (isTouchOnFocus && isPerformClick) {
+                        targetView.getView().setPressed(true);
+                        targetView.getView().invalidate();
 
-                return true;
-            default:
-                break;
+                        return true;
+                    }
+                    break;
+
+                case MotionEvent.ACTION_UP:
+
+                    if (isTouchOnFocus || dismissOnTouch)
+                        dismiss();
+
+                    if (isTouchOnFocus && isPerformClick) {
+                        targetView.getView().performClick();
+                        targetView.getView().setPressed(true);
+                        targetView.getView().invalidate();
+                        targetView.getView().setPressed(false);
+                        targetView.getView().invalidate();
+                    }
+
+                    if (isTouchOnFocus) {
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         return super.onTouchEvent(event);
