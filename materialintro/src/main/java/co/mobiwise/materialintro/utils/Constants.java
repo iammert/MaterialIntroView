@@ -19,5 +19,9 @@ public class Constants {
 
     public static int DEFAULT_DOT_SIZE = 55;
 
+    public static final int DEFAULT_GESTURE_DRAWABLE = R.drawable.icon_dotview;
+
+    public static final int DEFAULT_GESTURE_ANIMATOR = R.animator.pulsate;
+
     public static final int DEFAULT_ICON_DRAWABLE = R.drawable.icon_question;
 }

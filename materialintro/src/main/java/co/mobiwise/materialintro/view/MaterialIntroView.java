@@ -273,8 +273,8 @@ public class MaterialIntroView extends RelativeLayout {
         isImageViewEnabled = true;
         isIdempotent = false;
         gestureDrawableEnabled = true;
-        gestureDrawableResId = R.drawable.icon_dotview;
-        gestureAnimatorResId = R.animator.pulsate;
+        gestureDrawableResId = Constants.DEFAULT_GESTURE_DRAWABLE;
+        gestureAnimatorResId = Constants.DEFAULT_GESTURE_ANIMATOR;
         iconDrawableResId = Constants.DEFAULT_ICON_DRAWABLE;
 
         /**
