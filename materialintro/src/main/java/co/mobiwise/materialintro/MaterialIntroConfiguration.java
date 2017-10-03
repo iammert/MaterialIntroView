@@ -1,6 +1,9 @@
 package co.mobiwise.materialintro;
 
 
+import android.support.annotation.AnimatorRes;
+import android.support.annotation.DrawableRes;
+
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
 import co.mobiwise.materialintro.utils.Constants;
@@ -23,9 +26,13 @@ public class MaterialIntroConfiguration {
 
     private int colorTextViewInfo;
 
-    private boolean isDotViewEnabled;
+    private @DrawableRes int gestureDrawableResId;
+
+    private @AnimatorRes int gestureAnimatorResId;
 
     private boolean isImageViewEnabled;
+
+    private @DrawableRes int iconDrawableResId;
 
     public MaterialIntroConfiguration() {
         maskColor = Constants.DEFAULT_MASK_COLOR;
@@ -36,8 +43,8 @@ public class MaterialIntroConfiguration {
         focusGravity = FocusGravity.CENTER;
         isFadeAnimationEnabled = false;
         dismissOnTouch = false;
-        isDotViewEnabled = false;
         isImageViewEnabled = true;
+        iconDrawableResId = Constants.DEFAULT_ICON_DRAWABLE;
     }
 
     public int getMaskColor() {
@@ -104,15 +111,31 @@ public class MaterialIntroConfiguration {
         this.colorTextViewInfo = colorTextViewInfo;
     }
 
-    public boolean isDotViewEnabled() {
-        return isDotViewEnabled;
-    }
-
     public boolean isImageViewEnabled(){
         return isImageViewEnabled;
     }
 
-    public void setDotViewEnabled(boolean dotViewEnabled) {
-        isDotViewEnabled = dotViewEnabled;
+    public void setIconDrawableResId(int iconDrawableResId) {
+        this.iconDrawableResId = iconDrawableResId;
+    }
+
+    public int getIconDrawableResId() {
+        return this.iconDrawableResId;
+    }
+
+    public int getGestureDrawableResId() {
+        return gestureDrawableResId;
+    }
+
+    public void setGestureDrawableResId(int gestureDrawableResId) {
+        this.gestureDrawableResId = gestureDrawableResId;
+    }
+
+    public int getGestureAnimatorResId() {
+        return gestureAnimatorResId;
+    }
+
+    public void setGestureAnimatorResId(int gestureAnimatorResId) {
+        this.gestureAnimatorResId = gestureAnimatorResId;
     }
 }

@@ -17,11 +17,13 @@ public class PreferencesManager {
     }
 
     public boolean isDisplayed(String id){
-        return sharedPreferences.getBoolean(id, false);
+        return id != null && sharedPreferences.getBoolean(id, false);
     }
 
     public void setDisplayed(String id){
-        sharedPreferences.edit().putBoolean(id,true).apply();
+        if (id != null) {
+            sharedPreferences.edit().putBoolean(id, true).apply();
+        }
     }
 
     public void reset(String id){

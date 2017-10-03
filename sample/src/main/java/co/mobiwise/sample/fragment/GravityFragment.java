@@ -51,7 +51,6 @@ public class GravityFragment extends Fragment implements MaterialIntroListener{
 
     public void showIntro(View view, String id, String text, FocusGravity focusGravity){
         new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(true)
                 .setFocusGravity(focusGravity)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(200)

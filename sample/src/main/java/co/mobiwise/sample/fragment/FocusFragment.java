@@ -43,7 +43,6 @@ public class FocusFragment extends Fragment implements MaterialIntroListener{
 
     public void showIntro(View view, String id, String text, Focus focusType){
         new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(false)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(focusType)
                 .setDelayMillis(200)

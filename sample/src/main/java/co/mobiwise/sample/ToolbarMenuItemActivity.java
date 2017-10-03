@@ -134,7 +134,6 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
      */
     public void showIntro(View view, String id, String text, FocusGravity focusGravity) {
         new MaterialIntroView.Builder(ToolbarMenuItemActivity.this)
-                .enableDotAnimation(true)
                 .setFocusGravity(focusGravity)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(100)

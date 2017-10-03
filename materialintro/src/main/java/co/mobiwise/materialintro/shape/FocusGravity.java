@@ -10,5 +10,5 @@ public enum FocusGravity {
      * ie. We may want to focus on
      * left of recyclerview item
      */
-    LEFT, CENTER, RIGHT
+    LEFT, CENTER, RIGHT, TOP, BOTTOM
 }

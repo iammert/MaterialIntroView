@@ -1,7 +1,6 @@
 package co.mobiwise.materialintro.shape;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 
@@ -30,8 +29,15 @@ public class Rect extends Shape {
     }
 
     @Override
-    public void draw(Canvas canvas, Paint eraser, int padding) {
-        canvas.drawRoundRect(adjustedRect, padding, padding, eraser);
+    public Path getPath(int padding) {
+        if (this.padding != padding || cachedPath == null) {
+            this.padding = padding;
+            calculateAdjustedRect();
+            cachedPath = new Path();
+            cachedPath.addRoundRect(adjustedRect, padding, padding, Path.Direction.CW);
+        }
+
+        return cachedPath;
     }
 
     private void calculateAdjustedRect() {
