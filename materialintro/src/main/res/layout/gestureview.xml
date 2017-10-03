@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@drawable/icon_dotview"
+    android:src="@drawable/ic_dot"
     android:visibility="invisible"/>
 
 
