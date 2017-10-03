@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -470,15 +471,24 @@ public class MaterialIntroView extends RelativeLayout {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.FILL_PARENT);
 
+                RelativeLayout infoRelativeLayout = ((RelativeLayout) infoView);
+                if (targetShape.getPoint().x < width / 3) {
+                    infoRelativeLayout.setHorizontalGravity(Gravity.START);
+                } else if (targetShape.getPoint().x > (2 * width) / 3) {
+                    infoRelativeLayout.setHorizontalGravity(Gravity.END);
+                }  else {
+                    infoRelativeLayout.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
+                }
+
                 if (targetShape.getPoint().y < height / 2) {
-                    ((RelativeLayout) infoView).setGravity(Gravity.TOP);
+                    ((RelativeLayout) infoView).setVerticalGravity(Gravity.TOP);
                     infoDialogParams.setMargins(
                             0,
                             targetShape.getPoint().y + targetShape.getHeight() / 2,
                             0,
                             0);
                 } else {
-                    ((RelativeLayout) infoView).setGravity(Gravity.BOTTOM);
+                    ((RelativeLayout) infoView).setVerticalGravity(Gravity.BOTTOM);
                     infoDialogParams.setMargins(
                             0,
                             0,
@@ -494,7 +504,7 @@ public class MaterialIntroView extends RelativeLayout {
                 imageViewIcon.setVisibility(isImageViewEnabled ? VISIBLE : GONE);
                 imageViewIcon.setImageResource(iconDrawableResId);
                 if (iconDrawableResId != Constants.DEFAULT_ICON_DRAWABLE) {
-                    LayoutParams lp = (LayoutParams) imageViewIcon.getLayoutParams();
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) imageViewIcon.getLayoutParams();
                     lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     imageViewIcon.setLayoutParams(lp);
