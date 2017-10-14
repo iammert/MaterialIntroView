@@ -328,8 +328,6 @@ public class MaterialIntroView extends RelativeLayout {
         if (!isReady) return;
 
         if (bitmap == null || canvas == null) {
-            if (bitmap != null) bitmap.recycle();
-
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             this.canvas = new Canvas(bitmap);
         }
