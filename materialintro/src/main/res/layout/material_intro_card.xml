@@ -19,8 +19,9 @@
         app:contentPadding="0dp">
 
         <RelativeLayout
+            android:layout_gravity="start"
             android:id="@+id/layout_info_main"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp">
@@ -30,20 +31,20 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/icon_question"/>
 
             <TextView
                 android:id="@+id/textview_info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:textSize="@dimen/info_text_size"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:gravity="start"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_toRightOf="@id/imageview_icon"
+                android:layout_toEndOf="@id/imageview_icon"
                 android:textColor="@android:color/black"/>
 
         </RelativeLayout>
