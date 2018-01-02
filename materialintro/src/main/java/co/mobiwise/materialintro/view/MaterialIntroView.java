@@ -215,6 +215,8 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private ShapeType shapeType;
 
+    private int layoutId = -1;
+
     /**
      * Use custom shape
      */
@@ -222,6 +224,12 @@ public class MaterialIntroView extends RelativeLayout {
 
     public MaterialIntroView(Context context) {
         super(context);
+        init(context);
+    }
+
+    public MaterialIntroView(Context context, int layoutId) {
+        super(context);
+        this.layoutId = layoutId;
         init(context);
     }
 
@@ -278,7 +286,11 @@ public class MaterialIntroView extends RelativeLayout {
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         eraser.setFlags(Paint.ANTI_ALIAS_FLAG);
 
-        View layoutInfo = LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
+        if(layoutId <= 0){
+            layoutId = R.layout.material_intro_card;
+        }
+
+        View layoutInfo = LayoutInflater.from(getContext()).inflate(layoutId, null);
 
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
@@ -647,6 +659,11 @@ public class MaterialIntroView extends RelativeLayout {
         public Builder(Activity activity) {
             this.activity = activity;
             materialIntroView = new MaterialIntroView(activity);
+        }
+
+        public Builder(Activity activity, int layoutId) {
+            this.activity = activity;
+            materialIntroView = new MaterialIntroView(activity, layoutId);
         }
 
         public Builder setMaskColor(int maskColor) {

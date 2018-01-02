@@ -49,7 +49,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     }
 
     private void showIntro(View view, String usageId, String text){
-        new MaterialIntroView.Builder(getActivity())
+        new MaterialIntroView.Builder(getActivity(), R.layout.test_intro_card)
                 .enableDotAnimation(true)
                 //.enableIcon(false)
                 .setFocusGravity(FocusGravity.CENTER)
