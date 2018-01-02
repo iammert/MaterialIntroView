@@ -290,12 +290,20 @@ public class MaterialIntroView extends RelativeLayout {
             layoutId = R.layout.material_intro_card;
         }
 
-        View layoutInfo = LayoutInflater.from(getContext()).inflate(layoutId, null);
-
-        infoView = layoutInfo.findViewById(R.id.info_layout);
-        textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
-        textViewInfo.setTextColor(colorTextViewInfo);
-        imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
+        try {
+            View layoutInfo = LayoutInflater.from(getContext()).inflate(layoutId, null);
+            infoView = layoutInfo.findViewById(R.id.info_layout);
+            textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
+            textViewInfo.setTextColor(colorTextViewInfo);
+            imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
+        }
+        catch(Exception e){
+            View layoutInfo = LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
+            infoView = layoutInfo.findViewById(R.id.info_layout);
+            textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
+            textViewInfo.setTextColor(colorTextViewInfo);
+            imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
+        }
 
         dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
         dotView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
