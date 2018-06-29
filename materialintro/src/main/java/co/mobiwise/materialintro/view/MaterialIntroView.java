@@ -220,6 +220,11 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean usesCustomShape = false;
 
+    /**
+     * status of dismiss
+     */
+    private boolean isDismiss = false;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -372,16 +377,17 @@ public class MaterialIntroView extends RelativeLayout {
 
                 return true;
             case MotionEvent.ACTION_UP:
+                if(!isDismiss){
+                    if (isTouchOnFocus || dismissOnTouch)
+                        dismiss();
 
-                if (isTouchOnFocus || dismissOnTouch)
-                    dismiss();
-
-                if (isTouchOnFocus && isPerformClick) {
-                    targetView.getView().performClick();
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                    targetView.getView().setPressed(false);
-                    targetView.getView().invalidate();
+                    if (isTouchOnFocus && isPerformClick) {
+                        targetView.getView().performClick();
+                        targetView.getView().setPressed(true);
+                        targetView.getView().invalidate();
+                        targetView.getView().setPressed(false);
+                        targetView.getView().invalidate();
+                    }
                 }
 
                 return true;
@@ -425,12 +431,14 @@ public class MaterialIntroView extends RelativeLayout {
         if(isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
         }
+        isDismiss = false;
     }
 
     /**
      * Dismiss Material Intro View
      */
     public void dismiss() {
+        isDismiss = true;
         if(!isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
         }
