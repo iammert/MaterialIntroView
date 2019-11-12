@@ -17,7 +17,7 @@ new MaterialIntroView.Builder(this)
                 .enableFadeAnimation(true)
                 .performClick(true)
                 .setInfoText("Hi There! Click this card and see what happens.")
-                .setShapeType(ShapeType.CIRCLE)
+                .setShape(ShapeType.CIRCLE)
                 .setTarget(view)
                 .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
                 .show();
@@ -80,8 +80,8 @@ dependencies {
 .setInfoTextSize(30) //Change text size
 ```
 ```java
-.setShapeType(ShapeType.CIRCLE) //Change shape of focus area
-.setShapeType(ShapeType.RECTANGLE) //Change shape of focus area
+.setShape(ShapeType.CIRCLE) //Change shape of focus area
+.setShape(ShapeType.RECTANGLE) //Change shape of focus area
 ```
 ```java
 .setCustomShape(Shape shape) //Use custom shape
