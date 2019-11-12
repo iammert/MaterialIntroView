@@ -10,7 +10,7 @@ We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and w
 ```java
 new MaterialIntroView.Builder(this)
                 .enableDotAnimation(true)
-				.enableIcon(false)
+                .enableIcon(false)
                 .setFocusGravity(FocusGravity.CENTER)
                 .setFocusType(Focus.MINIMUM)
                 .setDelayMillis(500)
