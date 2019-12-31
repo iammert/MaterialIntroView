@@ -36,7 +36,8 @@ repositories {
 Module build.gradle
 ```java
 dependencies {
-  compile 'com.github.iammert:MaterialIntroView:1.6.0'
+  implementation 'com.github.iammert:MaterialIntroView:2.0.0' // for androidx user
+  // implementation 'com.github.iammert:MaterialIntroView:1.6.0' // for android support user
 }
 ```
 
