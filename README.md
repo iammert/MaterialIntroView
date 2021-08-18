@@ -37,7 +37,7 @@ Module build.gradle
 ```java
 dependencies {
   // https://github.com/DevDengChao/MaterialIntroView
-  implementation 'com.github.DevDengChao:MaterialIntroView:2.0.1' // for androidx user
+  implementation 'com.github.DevDengChao:MaterialIntroView:2.0.2' // for androidx user
 
   // https://github.com/iammert/MaterialIntroView
   // implementation 'com.github.iammert:MaterialIntroView:1.6.0' // for android support user
