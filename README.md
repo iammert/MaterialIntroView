@@ -36,7 +36,10 @@ repositories {
 Module build.gradle
 ```java
 dependencies {
-  implementation 'com.github.iammert:MaterialIntroView:2.0.0' // for androidx user
+  // https://github.com/DevDengChao/MaterialIntroView
+  implementation 'com.github.DevDengChao:MaterialIntroView:2.0.0' // for androidx user
+
+  // https://github.com/iammert/MaterialIntroView
   // implementation 'com.github.iammert:MaterialIntroView:1.6.0' // for android support user
 }
 ```
@@ -155,6 +158,8 @@ public class MyShape extends Shape {
 [Mert SIMSEK](https://github.com/iammert)
 
 [Murat Can BUR](https://github.com/muratcanbur)
+
+[DevDengChao](https://github.com/DevDengChao)
 
 
 # Docs
