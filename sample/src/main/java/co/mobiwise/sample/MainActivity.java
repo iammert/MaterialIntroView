@@ -79,26 +79,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        switch (item.getItemId()) {
-            case R.id.nav_demo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
-                break;
-            case R.id.nav_gravity:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new GravityFragment()).commit();
-                break;
-            case R.id.nav_focus:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new FocusFragment()).commit();
-                break;
-            case R.id.nav_recyclerview:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecyclerviewFragment()).commit();
-                break;
-            case R.id.nav_toolbar:
-                startActivity(new Intent(getApplicationContext(), ToolbarMenuItemActivity.class));
-                break;
-            case R.id.nav_tab:
-                break;
-            default:
-                break;
+        int id = item.getItemId();
+        if (id == R.id.nav_demo) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
+        } else if (id == R.id.nav_gravity) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new GravityFragment()).commit();
+        } else if (id == R.id.nav_focus) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new FocusFragment()).commit();
+        } else if (id == R.id.nav_recyclerview) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecyclerviewFragment()).commit();
+        } else if (id == R.id.nav_toolbar) {
+            startActivity(new Intent(getApplicationContext(), ToolbarMenuItemActivity.class));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
