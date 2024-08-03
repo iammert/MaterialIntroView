@@ -220,6 +220,13 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean usesCustomShape = false;
 
+    /**
+     * Set once dismiss() is called so that a second
+     * touch during the fade out animation does not
+     * notify the listener twice.
+     */
+    private boolean isDismissing;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -367,6 +374,8 @@ public class MaterialIntroView extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
+                if (isDismissing) return true;
+
                 if (isTouchOnFocus && isPerformClick) {
                     targetView.getView().setPressed(true);
                     targetView.getView().invalidate();
@@ -374,6 +383,8 @@ public class MaterialIntroView extends RelativeLayout {
 
                 return true;
             case MotionEvent.ACTION_UP:
+
+                if (isDismissing) return true;
 
                 if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
@@ -433,6 +444,9 @@ public class MaterialIntroView extends RelativeLayout {
      * Dismiss Material Intro View
      */
     public void dismiss() {
+        if (isDismissing) return;
+        isDismissing = true;
+
         if(!isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
         }
