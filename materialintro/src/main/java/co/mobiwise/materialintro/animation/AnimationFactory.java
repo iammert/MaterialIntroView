@@ -85,7 +85,7 @@ public class AnimationFactory {
         objectAnimator.start();
     }
 
-    public static void performAnimation(View view) {
+    public static Animator performAnimation(View view) {
 
         AnimatorSet animatorSet = new AnimatorSet();
 
@@ -101,6 +101,7 @@ public class AnimationFactory {
 
         animatorSet.playTogether(scaleX, scaleY);
         animatorSet.start();
+        return animatorSet;
     }
 
 }

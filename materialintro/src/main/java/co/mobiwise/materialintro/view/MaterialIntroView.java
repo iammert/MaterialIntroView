@@ -1,6 +1,7 @@
 package co.mobiwise.materialintro.view;
 
 import android.annotation.TargetApi;
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -227,6 +229,13 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private boolean isDismissing;
 
+    /**
+     * Infinite pulse animation of the dot view.
+     * Kept so it can be cancelled when the view
+     * is detached.
+     */
+    private Animator dotAnimator;
+
     public MaterialIntroView(Context context) {
         super(context);
         init(context);
@@ -276,7 +285,7 @@ public class MaterialIntroView extends RelativeLayout {
         /**
          * initialize objects
          */
-        handler = new Handler();
+        handler = new Handler(Looper.getMainLooper());
 
         preferencesManager = new PreferencesManager(context);
 
@@ -328,6 +337,24 @@ public class MaterialIntroView extends RelativeLayout {
 
         width = getMeasuredWidth();
         height = getMeasuredHeight();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        handler.removeCallbacksAndMessages(null);
+
+        if (dotAnimator != null) {
+            dotAnimator.cancel();
+            dotAnimator = null;
+        }
+
+        if (bitmap != null) {
+            bitmap.recycle();
+            bitmap = null;
+            canvas = null;
+        }
     }
 
     @Override
@@ -548,7 +575,7 @@ public class MaterialIntroView extends RelativeLayout {
                 addView(dotView);
 
                 dotView.setVisibility(VISIBLE);
-                AnimationFactory.performAnimation(dotView);
+                dotAnimator = AnimationFactory.performAnimation(dotView);
             }
         });
     }
