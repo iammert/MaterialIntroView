@@ -340,6 +340,17 @@ public class MaterialIntroView extends RelativeLayout {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        // Window was resized (multi-window, foldables, rotation with
+        // configChanges): recalculate the focus so it follows the target.
+        if (targetShape != null) {
+            targetShape.reCalculateAll();
+        }
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
@@ -361,9 +372,9 @@ public class MaterialIntroView extends RelativeLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (!isReady) return;
+        if (!isReady || width <= 0 || height <= 0) return;
 
-        if (bitmap == null || canvas == null) {
+        if (bitmap == null || bitmap.getWidth() != width || bitmap.getHeight() != height) {
             if (bitmap != null) bitmap.recycle();
 
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
