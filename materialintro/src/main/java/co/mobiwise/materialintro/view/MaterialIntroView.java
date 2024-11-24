@@ -409,14 +409,16 @@ public class MaterialIntroView extends RelativeLayout {
 
         boolean isTouchOnFocus = targetShape.isTouchOnFocus(xT, yT);
 
-        switch (event.getAction()) {
+        boolean clickTarget = isTouchOnFocus && isPerformClick
+                && targetView != null && targetView.getView() != null;
+
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
 
                 if (isDismissing) return true;
 
-                if (isTouchOnFocus && isPerformClick) {
+                if (clickTarget) {
                     targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
                 }
 
                 return true;
@@ -427,20 +429,26 @@ public class MaterialIntroView extends RelativeLayout {
                 if (isTouchOnFocus || dismissOnTouch)
                     dismiss();
 
-                if (isTouchOnFocus && isPerformClick) {
+                if (clickTarget) {
                     targetView.getView().performClick();
-                    targetView.getView().setPressed(true);
-                    targetView.getView().invalidate();
-                    targetView.getView().setPressed(false);
-                    targetView.getView().invalidate();
                 }
+                releaseTargetPressedState();
 
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                releaseTargetPressedState();
                 return true;
             default:
                 break;
         }
 
         return super.onTouchEvent(event);
+    }
+
+    private void releaseTargetPressedState() {
+        if (isPerformClick && targetView != null && targetView.getView() != null) {
+            targetView.getView().setPressed(false);
+        }
     }
 
     /**
