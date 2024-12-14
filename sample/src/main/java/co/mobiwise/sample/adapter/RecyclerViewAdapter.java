@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.coverName.setText(song.songName);
         holder.singerName.setText(song.singerName);
-        Picasso.with(context).load(song.songArt).into(holder.coverIamge);
+        holder.coverIamge.setImageResource(song.songArt);
     }
 
     @Override
