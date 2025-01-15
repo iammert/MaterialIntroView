@@ -115,4 +115,8 @@ public class MaterialIntroConfiguration {
     public void setDotViewEnabled(boolean dotViewEnabled) {
         isDotViewEnabled = dotViewEnabled;
     }
+
+    public void setImageViewEnabled(boolean imageViewEnabled) {
+        isImageViewEnabled = imageViewEnabled;
+    }
 }
