@@ -31,6 +31,9 @@ public class Rect extends Shape {
 
     @Override
     public void draw(Canvas canvas, Paint eraser, int padding) {
+        // The target may have moved since the last frame (scrolling,
+        // delayed show, collapsing toolbar), keep the focus on it.
+        calculateAdjustedRect();
         canvas.drawRoundRect(adjustedRect, padding, padding, eraser);
     }
 

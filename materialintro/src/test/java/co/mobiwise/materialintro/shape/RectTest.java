@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 
 import org.junit.Test;
@@ -39,5 +42,17 @@ public class RectTest {
         Rect rect = new Rect(target, Focus.ALL, FocusGravity.CENTER, 10);
         assertFalse(rect.isTouchOnFocus(85, 230));
         assertFalse(rect.isTouchOnFocus(200, 275));
+    }
+
+    @Test
+    public void draw_followsMovedTarget() {
+        Rect rect = new Rect(target, Focus.ALL, FocusGravity.CENTER, 10);
+        target.moveTo(400, 600);
+
+        Canvas canvas = new Canvas(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888));
+        rect.draw(canvas, new Paint(), 10);
+
+        assertTrue(rect.isTouchOnFocus(500, 630));
+        assertFalse(rect.isTouchOnFocus(200, 230));
     }
 }

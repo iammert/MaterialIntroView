@@ -17,6 +17,10 @@ class FakeTarget implements Target {
         rect = new Rect(left, top, right, bottom);
     }
 
+    void moveTo(int left, int top) {
+        rect.offsetTo(left, top);
+    }
+
     @Override
     public Point getPoint() {
         return new Point(rect.centerX(), rect.centerY());
