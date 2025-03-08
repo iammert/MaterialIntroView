@@ -55,4 +55,17 @@ public class RectTest {
         assertTrue(rect.isTouchOnFocus(500, 630));
         assertFalse(rect.isTouchOnFocus(200, 230));
     }
+
+    @Test
+    public void cornerRadius_defaultsToPadding() {
+        Rect rect = new Rect(target, Focus.ALL, FocusGravity.CENTER, 10);
+        assertEquals(10f, rect.getCornerRadius(10), 0f);
+    }
+
+    @Test
+    public void cornerRadius_canBeOverridden() {
+        Rect rect = new Rect(target, Focus.ALL, FocusGravity.CENTER, 10);
+        rect.setCornerRadius(0f);
+        assertEquals(0f, rect.getCornerRadius(10), 0f);
+    }
 }

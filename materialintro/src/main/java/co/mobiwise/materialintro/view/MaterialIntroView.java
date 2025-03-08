@@ -223,6 +223,12 @@ public class MaterialIntroView extends RelativeLayout {
     private boolean usesCustomShape = false;
 
     /**
+     * Corner radius used for ShapeType.RECTANGLE,
+     * negative means "same as padding"
+     */
+    private float rectCornerRadius = -1;
+
+    /**
      * Set once dismiss() is called so that a second
      * touch during the fade out animation does not
      * notify the listener twice.
@@ -740,6 +746,16 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
+        /**
+         * Corner radius in pixels of the focus area when the shape is
+         * {@link ShapeType#RECTANGLE}. Defaults to the target padding.
+         * Pass 0 for sharp corners.
+         */
+        public Builder setRectCornerRadius(float cornerRadiusPx) {
+            materialIntroView.rectCornerRadius = cornerRadiusPx;
+            return this;
+        }
+
         public Builder setFocusType(Focus focusType) {
             materialIntroView.setFocusType(focusType);
             return this;
@@ -837,11 +853,13 @@ public class MaterialIntroView extends RelativeLayout {
                         materialIntroView.focusGravity,
                         materialIntroView.padding);
             } else {
-                shape = new Rect(
+                Rect rect = new Rect(
                         materialIntroView.targetView,
                         materialIntroView.focusType,
                         materialIntroView.focusGravity,
                         materialIntroView.padding);
+                rect.setCornerRadius(materialIntroView.rectCornerRadius);
+                shape = rect;
             }
 
             materialIntroView.setShape(shape);

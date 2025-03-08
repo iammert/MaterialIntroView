@@ -14,6 +14,13 @@ public class Rect extends Shape {
 
     RectF adjustedRect;
 
+    /**
+     * Corner radius of the focus rectangle in pixels.
+     * A negative value keeps the legacy behaviour of
+     * using the target padding as radius.
+     */
+    private float cornerRadius = -1;
+
     public Rect(Target target) {
         super(target);
         calculateAdjustedRect();
@@ -34,7 +41,16 @@ public class Rect extends Shape {
         // The target may have moved since the last frame (scrolling,
         // delayed show, collapsing toolbar), keep the focus on it.
         calculateAdjustedRect();
-        canvas.drawRoundRect(adjustedRect, padding, padding, eraser);
+        float radius = getCornerRadius(padding);
+        canvas.drawRoundRect(adjustedRect, radius, radius, eraser);
+    }
+
+    public void setCornerRadius(float cornerRadius) {
+        this.cornerRadius = cornerRadius;
+    }
+
+    float getCornerRadius(int padding) {
+        return cornerRadius >= 0 ? cornerRadius : padding;
     }
 
     private void calculateAdjustedRect() {
