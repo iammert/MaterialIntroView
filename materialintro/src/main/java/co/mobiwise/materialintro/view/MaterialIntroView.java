@@ -465,7 +465,7 @@ public class MaterialIntroView extends RelativeLayout {
      */
     private void show(Activity activity) {
 
-        if (preferencesManager.isDisplayed(materialIntroViewId))
+        if (activity.isFinishing() || preferencesManager.isDisplayed(materialIntroViewId))
             return;
 
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);

@@ -10,22 +10,28 @@ public class PreferencesManager {
 
     private static final String PREFERENCES_NAME = "material_intro_preferences";
 
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     public PreferencesManager(Context context) {
-        sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.getApplicationContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Intros without a usage id are never persisted,
+     * so they are never reported as displayed.
+     */
     public boolean isDisplayed(String id){
-        return sharedPreferences.getBoolean(id, false);
+        return id != null && sharedPreferences.getBoolean(id, false);
     }
 
     public void setDisplayed(String id){
+        if (id == null) return;
         sharedPreferences.edit().putBoolean(id,true).apply();
     }
 
     public void reset(String id){
-        sharedPreferences.edit().putBoolean(id, false).apply();
+        if (id == null) return;
+        sharedPreferences.edit().remove(id).apply();
     }
 
     public void resetAll(){
