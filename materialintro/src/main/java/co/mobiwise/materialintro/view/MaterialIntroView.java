@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
+
 import co.mobiwise.materialintro.MaterialIntroConfiguration;
 import co.mobiwise.materialintro.R;
 import co.mobiwise.materialintro.animation.AnimationFactory;
@@ -785,6 +787,10 @@ public class MaterialIntroView extends RelativeLayout {
             materialIntroView.enableInfoDialog(true);
             materialIntroView.setTextViewInfo(infoText);
             return this;
+        }
+
+        public Builder setInfoText(@StringRes int infoTextRes) {
+            return setInfoText(activity.getText(infoTextRes));
         }
 
         public Builder setInfoTextSize(int textSize) {
