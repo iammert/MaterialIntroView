@@ -33,7 +33,9 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/icon_question"/>
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_question"
+                android:importantForAccessibility="no"/>
 
             <TextView
                 android:id="@+id/textview_info"

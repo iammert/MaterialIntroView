@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
 import co.mobiwise.materialintro.MaterialIntroConfiguration;
@@ -672,6 +674,10 @@ public class MaterialIntroView extends RelativeLayout {
         this.isInfoEnabled = isInfoEnabled;
     }
 
+    private void setIcon(Drawable icon) {
+        imageViewIcon.setImageDrawable(icon);
+    }
+
     private void enableImageViewIcon(boolean isImageViewEnabled){
         this.isImageViewEnabled = isImageViewEnabled;
     }
@@ -810,6 +816,20 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder enableDotAnimation(boolean isDotAnimationEnabled) {
             materialIntroView.enableDotView(isDotAnimationEnabled);
+            return this;
+        }
+
+        /**
+         * Replaces the default question mark icon of the info card.
+         * Setting an icon also enables it.
+         */
+        public Builder setIcon(@DrawableRes int iconRes) {
+            return setIcon(activity.getDrawable(iconRes));
+        }
+
+        public Builder setIcon(Drawable icon) {
+            materialIntroView.setIcon(icon);
+            materialIntroView.enableImageViewIcon(true);
             return this;
         }
 
