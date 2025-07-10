@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'co.mobiwise.materialintro'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         minSdk 21
@@ -33,5 +33,5 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test:core:1.6.1'
-    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'org.robolectric:robolectric:4.15.1'
 }
