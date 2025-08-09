@@ -17,16 +17,20 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 
 import co.mobiwise.materialintro.MaterialIntroConfiguration;
@@ -233,6 +237,20 @@ public class MaterialIntroView extends RelativeLayout {
     private float rectCornerRadius = -1;
 
     /**
+     * Dismiss the intro instead of letting the
+     * activity handle the back gesture/key
+     */
+    private boolean dismissOnBackPress = true;
+
+    /**
+     * Activity the intro is attached to and the back callback
+     * registered on API 33+ (OnBackInvokedCallback), kept as
+     * Object so the class loads on older platforms.
+     */
+    private Activity hostActivity;
+    private Object backInvokedCallback;
+
+    /**
      * Set once dismiss() is called so that a second
      * touch during the fade out animation does not
      * notify the listener twice.
@@ -365,6 +383,7 @@ public class MaterialIntroView extends RelativeLayout {
         super.onDetachedFromWindow();
 
         handler.removeCallbacksAndMessages(null);
+        unregisterBackCallback();
 
         if (dotAnimator != null) {
             dotAnimator.cancel();
@@ -455,6 +474,50 @@ public class MaterialIntroView extends RelativeLayout {
         return super.onTouchEvent(event);
     }
 
+    /**
+     * Handles the back key on platforms (or targetSdk levels)
+     * where predictive back is not used.
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (dismissOnBackPress && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+                dismiss();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void unregisterBackCallback() {
+        if (backInvokedCallback != null && Build.VERSION.SDK_INT >= 33) {
+            BackInvokedCallbacks.unregister(hostActivity, backInvokedCallback);
+        }
+        backInvokedCallback = null;
+        hostActivity = null;
+    }
+
+    @RequiresApi(33)
+    private static final class BackInvokedCallbacks {
+
+        static Object register(Activity activity, final Runnable action) {
+            OnBackInvokedCallback callback = new OnBackInvokedCallback() {
+                @Override
+                public void onBackInvoked() {
+                    action.run();
+                }
+            };
+            activity.getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    OnBackInvokedDispatcher.PRIORITY_OVERLAY, callback);
+            return callback;
+        }
+
+        static void unregister(Activity activity, Object callback) {
+            activity.getOnBackInvokedDispatcher()
+                    .unregisterOnBackInvokedCallback((OnBackInvokedCallback) callback);
+        }
+    }
+
     private void releaseTargetPressedState() {
         if (isPerformClick && targetView != null && targetView.getView() != null) {
             targetView.getView().setPressed(false);
@@ -475,6 +538,20 @@ public class MaterialIntroView extends RelativeLayout {
         ((ViewGroup) activity.getWindow().getDecorView()).addView(this);
 
         setReady(true);
+
+        if (dismissOnBackPress) {
+            hostActivity = activity;
+            setFocusableInTouchMode(true);
+            requestFocus();
+            if (Build.VERSION.SDK_INT >= 33) {
+                backInvokedCallback = BackInvokedCallbacks.register(activity, new Runnable() {
+                    @Override
+                    public void run() {
+                        dismiss();
+                    }
+                });
+            }
+        }
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -502,6 +579,7 @@ public class MaterialIntroView extends RelativeLayout {
     public void dismiss() {
         if (isDismissing) return;
         isDismissing = true;
+        unregisterBackCallback();
 
         if(!isIdempotent) {
             preferencesManager.setDisplayed(materialIntroViewId);
@@ -806,6 +884,15 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder dismissOnTouch(boolean dismissOnTouch) {
             materialIntroView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+
+        /**
+         * Whether the back key/gesture dismisses the intro. Enabled by default.
+         * When disabled, back is handled by the activity as usual.
+         */
+        public Builder dismissOnBackPress(boolean dismissOnBackPress) {
+            materialIntroView.dismissOnBackPress = dismissOnBackPress;
             return this;
         }
 
