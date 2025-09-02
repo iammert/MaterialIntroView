@@ -3,6 +3,7 @@ package co.mobiwise.materialintro.shape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.view.View;
 
 import co.mobiwise.materialintro.target.Target;
 import co.mobiwise.materialintro.utils.Constants;
@@ -38,6 +39,7 @@ public abstract class Shape {
     public abstract void draw(Canvas canvas, Paint eraser, int padding);
 
     protected Point getFocusPoint(){
+        FocusGravity focusGravity = resolveFocusGravity();
         if(focusGravity == FocusGravity.LEFT){
             int xLeft = target.getRect().left + (target.getPoint().x - target.getRect().left) / 2;
             return new Point(xLeft, target.getPoint().y);
@@ -48,6 +50,19 @@ public abstract class Shape {
         }
         else
             return target.getPoint();
+    }
+
+    /**
+     * Resolves START/END against the layout direction of the target view.
+     */
+    protected FocusGravity resolveFocusGravity() {
+        if (focusGravity != FocusGravity.START && focusGravity != FocusGravity.END)
+            return focusGravity;
+
+        View view = target.getView();
+        boolean isRtl = view != null && view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        boolean isStart = focusGravity == FocusGravity.START;
+        return isStart != isRtl ? FocusGravity.LEFT : FocusGravity.RIGHT;
     }
 
     public abstract void reCalculateAll();

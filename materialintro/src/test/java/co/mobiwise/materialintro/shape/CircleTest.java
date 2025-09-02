@@ -64,4 +64,16 @@ public class CircleTest {
         assertFalse(circle.isTouchOnFocus(50 + 31, 20));
         assertFalse(circle.isTouchOnFocus(0, 0));
     }
+
+    @Test
+    public void startGravity_focusesLeftHalfInLtr() {
+        Circle circle = new Circle(target, Focus.MINIMUM, FocusGravity.START, 0);
+        assertEquals(new Point(25, 20), circle.getPoint());
+    }
+
+    @Test
+    public void endGravity_focusesRightHalfInLtr() {
+        Circle circle = new Circle(target, Focus.MINIMUM, FocusGravity.END, 0);
+        assertEquals(new Point(75, 20), circle.getPoint());
+    }
 }
