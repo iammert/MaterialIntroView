@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,5 +97,18 @@ public class MaterialIntroViewTest {
 
         assertFalse(dismissedIds.contains("intro"));
         assertNotNull(intro.getParent());
+    }
+
+    @Test
+    public void accessibilityClick_dismissesIntro() {
+        MaterialIntroView intro = builder().setInfoText("Tap here to start").show();
+        idle();
+
+        assertEquals("Tap here to start", intro.getContentDescription().toString());
+        intro.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+        idle();
+
+        assertEquals(1, dismissedIds.size());
+        assertNull(intro.getParent());
     }
 }

@@ -288,6 +288,8 @@ public class MaterialIntroView extends RelativeLayout {
     private void init(Context context) {
         setWillNotDraw(false);
         setVisibility(INVISIBLE);
+        setClickable(true);
+        setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
 
         /**
          * set default values
@@ -327,6 +329,8 @@ public class MaterialIntroView extends RelativeLayout {
         infoView = layoutInfo.findViewById(R.id.info_layout);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
+        // Read the info text as soon as the card appears
+        textViewInfo.setAccessibilityLiveRegion(ACCESSIBILITY_LIVE_REGION_POLITE);
         imageViewIcon = (ImageView) layoutInfo.findViewById(R.id.imageview_icon);
 
         dotView = LayoutInflater.from(getContext()).inflate(R.layout.dotview, null);
@@ -456,7 +460,7 @@ public class MaterialIntroView extends RelativeLayout {
                 if (isDismissing) return true;
 
                 if (isTouchOnFocus || dismissOnTouch)
-                    dismiss();
+                    performClick();
 
                 if (clickTarget) {
                     targetView.getView().performClick();
@@ -516,6 +520,18 @@ public class MaterialIntroView extends RelativeLayout {
             activity.getOnBackInvokedDispatcher()
                     .unregisterOnBackInvokedCallback((OnBackInvokedCallback) callback);
         }
+    }
+
+    /**
+     * Clicking the overlay dismisses it. Touches are routed here
+     * and accessibility services (TalkBack double tap, Switch
+     * Access) trigger it through ACTION_CLICK.
+     */
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        dismiss();
+        return true;
     }
 
     private void releaseTargetPressedState() {
@@ -742,6 +758,10 @@ public class MaterialIntroView extends RelativeLayout {
 
     private void setTextViewInfo(CharSequence textViewInfo) {
         this.textViewInfo.setText(textViewInfo);
+        setContentDescription(textViewInfo);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            setAccessibilityPaneTitle(textViewInfo);
+        }
     }
 
     private void setTextViewInfoSize(int textViewInfoSize) {
