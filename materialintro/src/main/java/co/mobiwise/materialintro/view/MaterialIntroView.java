@@ -29,9 +29,11 @@ import android.window.OnBackInvokedDispatcher;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
+import androidx.cardview.widget.CardView;
 
 import co.mobiwise.materialintro.MaterialIntroConfiguration;
 import co.mobiwise.materialintro.R;
@@ -145,6 +147,11 @@ public class MaterialIntroView extends RelativeLayout {
      * Info dialog view
      */
     private View infoView;
+
+    /**
+     * Card that holds the icon and info text
+     */
+    private CardView cardView;
 
     /**
      * Info Dialog Text
@@ -327,6 +334,7 @@ public class MaterialIntroView extends RelativeLayout {
         View layoutInfo = LayoutInflater.from(getContext()).inflate(R.layout.material_intro_card, null);
 
         infoView = layoutInfo.findViewById(R.id.info_layout);
+        cardView = layoutInfo.findViewById(R.id.card_view);
         textViewInfo = (TextView) layoutInfo.findViewById(R.id.textview_info);
         textViewInfo.setTextColor(colorTextViewInfo);
         // Read the info text as soon as the card appears
@@ -764,6 +772,14 @@ public class MaterialIntroView extends RelativeLayout {
         }
     }
 
+    private void setInfoCardBackgroundColor(@ColorInt int color) {
+        cardView.setCardBackgroundColor(color);
+    }
+
+    private void setIconTint(@ColorInt int color) {
+        imageViewIcon.setColorFilter(color);
+    }
+
     private void setTextViewInfoSize(int textViewInfoSize) {
         this.textViewInfo.setTextSize(TypedValue.COMPLEX_UNIT_SP, textViewInfoSize);
     }
@@ -895,6 +911,23 @@ public class MaterialIntroView extends RelativeLayout {
 
         public Builder setInfoText(@StringRes int infoTextRes) {
             return setInfoText(activity.getText(infoTextRes));
+        }
+
+        /**
+         * Background color of the info card, white by default.
+         * Combine with {@link #setTextColor(int)} for dark themes.
+         */
+        public Builder setInfoCardBackgroundColor(@ColorInt int color) {
+            materialIntroView.setInfoCardBackgroundColor(color);
+            return this;
+        }
+
+        /**
+         * Tints the info card icon.
+         */
+        public Builder setIconTint(@ColorInt int color) {
+            materialIntroView.setIconTint(color);
+            return this;
         }
 
         public Builder setInfoTextSize(int textSize) {
