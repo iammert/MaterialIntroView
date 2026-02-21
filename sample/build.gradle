@@ -3,27 +3,27 @@ plugins {
 }
 
 android {
-    namespace 'co.mobiwise.sample'
-    compileSdk 36
+    namespace = 'co.mobiwise.sample'
+    compileSdk = 36
 
     defaultConfig {
-        applicationId 'co.mobiwise.sample'
-        minSdk 21
-        targetSdk 36
-        versionCode 1
-        versionName '1.0'
+        applicationId = 'co.mobiwise.sample'
+        minSdk = 21
+        targetSdk = 36
+        versionCode = 1
+        versionName = '1.0'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 

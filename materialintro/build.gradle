@@ -3,24 +3,24 @@ plugins {
 }
 
 android {
-    namespace 'co.mobiwise.materialintro'
-    compileSdk 36
+    namespace = 'co.mobiwise.materialintro'
+    compileSdk = 36
 
     defaultConfig {
-        minSdk 21
+        minSdk = 21
         consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     testOptions {
