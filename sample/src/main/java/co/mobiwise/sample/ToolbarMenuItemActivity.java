@@ -14,9 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import co.mobiwise.materialintro.animation.MaterialIntroListener;
 import co.mobiwise.materialintro.shape.Focus;
 import co.mobiwise.materialintro.shape.FocusGravity;
+import co.mobiwise.materialintro.view.MaterialIntroSequence;
 import co.mobiwise.materialintro.view.MaterialIntroView;
 import co.mobiwise.sample.fragment.FocusFragment;
 import co.mobiwise.sample.fragment.GravityFragment;
@@ -29,7 +29,7 @@ import co.mobiwise.sample.fragment.RecyclerviewFragment;
  * @author Thomas Kioko
  */
 public class ToolbarMenuItemActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MaterialIntroListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String MENU_SHARED_ID_TAG = "menuSharedIdTag";
     private static final String MENU_ABOUT_ID_TAG = "menuAboutIdTag";
@@ -58,8 +58,14 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //show the intro view
-        showIntro(ivSearch, MENU_SEARCH_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.CENTER);
+        // Show the intros for the toolbar items one after another
+        new MaterialIntroSequence()
+                .add(intro(ivSearch, MENU_SEARCH_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.CENTER))
+                .add(intro(mIvAbout, MENU_ABOUT_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT))
+                .add(intro(mIvShare, MENU_SHARED_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT))
+                .setOnCompleteListener(() ->
+                        Toast.makeText(ToolbarMenuItemActivity.this, "Complete!", Toast.LENGTH_SHORT).show())
+                .start();
 
     }
 
@@ -107,15 +113,15 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
     }
 
     /**
-     * Method that handles display of intro screens
+     * Creates the intro for a toolbar item
      *
      * @param view         View to show guide
      * @param id           Unique ID
      * @param text         Display message
      * @param focusGravity Focus Gravity of the display
      */
-    public void showIntro(View view, String id, String text, FocusGravity focusGravity) {
-        new MaterialIntroView.Builder(ToolbarMenuItemActivity.this)
+    private MaterialIntroView.Builder intro(View view, String id, String text, FocusGravity focusGravity) {
+        return new MaterialIntroView.Builder(ToolbarMenuItemActivity.this)
                 .enableDotAnimation(true)
                 .setFocusGravity(focusGravity)
                 .setFocusType(Focus.MINIMUM)
@@ -124,25 +130,6 @@ public class ToolbarMenuItemActivity extends AppCompatActivity
                 .performClick(true)
                 .setInfoText(text)
                 .setTarget(view)
-                .setListener(this)
-                .setUsageId(id)
-                .show();
-    }
-
-    @Override
-    public void onUserClicked(String materialIntroViewId) {
-        switch (materialIntroViewId) {
-            case MENU_SEARCH_ID_TAG:
-                showIntro(mIvAbout, MENU_ABOUT_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
-                break;
-            case MENU_ABOUT_ID_TAG:
-                showIntro(mIvShare, MENU_SHARED_ID_TAG, getString(R.string.guide_setup_profile), FocusGravity.LEFT);
-                break;
-            case MENU_SHARED_ID_TAG:
-                Toast.makeText(ToolbarMenuItemActivity.this, "Complete!", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
-        }
+                .setUsageId(id);
     }
 }

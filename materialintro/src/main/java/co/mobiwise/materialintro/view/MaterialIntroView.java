@@ -993,6 +993,10 @@ public class MaterialIntroView extends RelativeLayout {
             return this;
         }
 
+        MaterialIntroListener getListener() {
+            return materialIntroView.materialIntroListener;
+        }
+
         public Builder setCustomShape(Shape shape) {
             materialIntroView.usesCustomShape = true;
             materialIntroView.setShape(shape);
