@@ -589,6 +589,9 @@ public class MaterialIntroView extends RelativeLayout {
                     });
                 else
                     setVisibility(VISIBLE);
+
+                if (materialIntroListener != null)
+                    materialIntroListener.onIntroShown(materialIntroViewId);
             }
         }, delayMillis);
 

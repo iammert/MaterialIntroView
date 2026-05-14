@@ -19,7 +19,10 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import co.mobiwise.materialintro.animation.MaterialIntroListener;
 
 @RunWith(RobolectricTestRunner.class)
 public class MaterialIntroViewTest {
@@ -110,5 +113,32 @@ public class MaterialIntroViewTest {
 
         assertEquals(1, dismissedIds.size());
         assertNull(intro.getParent());
+    }
+
+    @Test
+    public void listener_isNotifiedWhenShownAfterDelay() {
+        final List<String> shownIds = new ArrayList<>();
+        new MaterialIntroView.Builder(activity)
+                .setTarget(target)
+                .enableFadeAnimation(false)
+                .setDelayMillis(500)
+                .setUsageId("intro")
+                .setListener(new MaterialIntroListener() {
+                    @Override
+                    public void onUserClicked(String materialIntroViewId) {
+                    }
+
+                    @Override
+                    public void onIntroShown(String materialIntroViewId) {
+                        shownIds.add(materialIntroViewId);
+                    }
+                })
+                .show();
+
+        shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(499));
+        assertEquals(0, shownIds.size());
+
+        shadowOf(Looper.getMainLooper()).idleFor(java.time.Duration.ofMillis(1));
+        assertEquals(Arrays.asList("intro"), shownIds);
     }
 }
