@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
+    id 'maven-publish'
 }
+
+group = 'com.github.iammert'
+version = '2.0.0'
 
 android {
     namespace = 'co.mobiwise.materialintro'
@@ -26,6 +30,12 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -35,4 +45,27 @@ dependencies {
     testImplementation libs.junit
     testImplementation libs.androidx.test.core
     testImplementation libs.robolectric
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifactId = 'MaterialIntroView'
+
+                pom {
+                    name = 'MaterialIntroView'
+                    description = 'Material showcase library for Android'
+                    url = 'https://github.com/iammert/MaterialIntroView'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
