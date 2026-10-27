@@ -1,4 +1,7 @@
-# MaterialIntroView [Beta]
+# MaterialIntroView
+[![Android CI](https://github.com/iammert/MaterialIntroView/actions/workflows/android.yml/badge.svg)](https://github.com/iammert/MaterialIntroView/actions/workflows/android.yml)
+[![JitPack](https://jitpack.io/v/iammert/MaterialIntroView.svg)](https://jitpack.io/#iammert/MaterialIntroView)
+
 Material Intro View is a showcase android library.
 
 We saw this kind of showcase on [Fabulous App](http://www.thefabulous.co/) and we love it. Then decided to create showcase just like it.
@@ -17,28 +20,33 @@ new MaterialIntroView.Builder(this)
                 .enableFadeAnimation(true)
                 .performClick(true)
                 .setInfoText("Hi There! Click this card and see what happens.")
-                .setShapeType(ShapeType.CIRCLE)
+                .setShape(ShapeType.CIRCLE)
                 .setTarget(view)
                 .setUsageId("intro_card") //THIS SHOULD BE UNIQUE ID
                 .show();
 ```
 
 # Import
-Project build.gradle
-```java
-repositories {
-    maven {
-        url "https://jitpack.io"
+settings.gradle
+```groovy
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 ```
 
 Module build.gradle
-```java
+```groovy
 dependencies {
-  compile 'com.github.iammert:MaterialIntroView:1.6.0'
+    implementation 'com.github.iammert:MaterialIntroView:2.0.0'
 }
 ```
+
+Version 2.0.0 requires AndroidX and minSdk 21. Use `1.6.0` if your project
+still depends on the support library.
 
 # Builder Methods
 ```java
@@ -61,8 +69,11 @@ dependencies {
 ```java
 //ie. You can focus on left of RecyclerView list item.
 .setFocusGravity(FocusGravity.LEFT)
-.setFocusType(FocusGravity.CENTER)
-.setFocusType(FocusGravity.RIGHT)
+.setFocusGravity(FocusGravity.CENTER)
+.setFocusGravity(FocusGravity.RIGHT)
+//START and END follow the layout direction (RTL aware)
+.setFocusGravity(FocusGravity.START)
+.setFocusGravity(FocusGravity.END)
 ```
 ```java
 .setTarget(myButton) //Focus on myButton
@@ -77,11 +88,20 @@ dependencies {
 .setTextColor(Color.Black) //Info dialog's text color is set to black
 ```
 ```java
+.setInfoText(R.string.intro_text) //String resources are supported too
+```
+```java
 .setInfoTextSize(30) //Change text size
 ```
 ```java
-.setShapeType(ShapeType.CIRCLE) //Change shape of focus area
-.setShapeType(ShapeType.RECTANGLE) //Change shape of focus area
+.setInfoCardBackgroundColor(Color.DKGRAY) //Info card color, white by default
+.setIconTint(Color.WHITE) //Tint the info card icon
+.setIcon(R.drawable.ic_lightbulb) //Replace the default icon
+```
+```java
+.setShape(ShapeType.CIRCLE) //Change shape of focus area
+.setShape(ShapeType.RECTANGLE) //Change shape of focus area
+.setRectCornerRadius(0) //Corner radius of the rectangle in px, defaults to the target padding
 ```
 ```java
 .setCustomShape(Shape shape) //Use custom shape
@@ -104,15 +124,41 @@ dependencies {
 .performClick(true) //Trigger click operation when user click focused area.
 ```
 ```java
+.dismissOnBackPress(false) //Back dismisses the intro by default, including predictive back
+```
+```java
 //If you don't want to perform click automatically
 //You can disable perform clik and handle it yourself
 .setListener(new MaterialIntroListener() {
                     @Override
                     public void onUserClicked(String materialIntroViewId) {
-                        
+                        // Called when the intro is dismissed
+                    }
+
+                    @Override
+                    public void onIntroShown(String materialIntroViewId) {
+                        // Optional, called when the intro becomes visible
                     }
                 })
-                
+```
+
+Intros without a usage id are not persisted and are shown every time.
+
+# Sequence
+Show several intros one after another. Intros that were already displayed are skipped.
+```java
+new MaterialIntroSequence()
+        .add(new MaterialIntroView.Builder(this).setTarget(searchView).setInfoText("Search songs").setUsageId("search"))
+        .add(new MaterialIntroView.Builder(this).setTarget(shareView).setInfoText("Share with friends").setUsageId("share"))
+        .setOnCompleteListener(() -> { /* all intros were shown */ })
+        .start();
+```
+
+# Reset
+```java
+PreferencesManager preferences = new PreferencesManager(context);
+preferences.reset("intro_card"); //Show a single intro again
+preferences.resetAll(); //Show every intro again
 ```
 # Configuration Method
 ```java
@@ -144,10 +190,8 @@ public class MyShape extends Shape {
 ![Alt text](/art/art_focus_normal.png?raw=true)
 ![Alt text](/art/art_gravity_left.png?raw=true)
 ![Alt text](/art/art_rectangle.png?raw=true)
-# TODO
-
-* [ ] Sample app will be more detailed about using library.
-* [ ] Sequence for MaterialIntroViews
+# Changelog
+See [CHANGELOG.md](CHANGELOG.md).
 
 # Authors
 
