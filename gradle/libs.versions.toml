@@ -1,7 +1,7 @@
 [versions]
 agp = "9.4.0"
-annotation = "1.9.1"
-appcompat = "1.7.1"
+annotation = "1.11.0"
+appcompat = "1.8.0"
 cardview = "1.0.0"
 material = "1.13.0"
 recyclerview = "1.4.0"
